@@ -629,14 +629,14 @@ const Header = () => {
                     <Link
                       href="/login"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block mt-auto border-2 border-[#1a7a00] text-[#1a7a00] rounded px-4 py-2 text-center font-semibold"
+                      className="block border-2 border-[#1a7a00] text-[#1a7a00] rounded px-4 py-2 text-center font-semibold"
                     >
                       Đăng nhập
                     </Link>
                     <Link
                       href="/signup"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block bg-[#1a7a00] text-white rounded px-4 py-2 mt-2 text-center font-semibold"
+                      className="block bg-[#1a7a00] text-white rounded px-4 py-2 text-center font-semibold"
                     >
                       Đăng ký
                     </Link>

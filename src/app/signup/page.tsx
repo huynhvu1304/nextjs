@@ -141,7 +141,7 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
     <>
-    <div className="min-h-screen mt-10 flex items-center justify-center bg-gradient-to-r from-gray-200 to-gray-100">
+        <div className="min-h-screen mt-7 flex items-center justify-center  bg-gray-100 px-4">
       <div className="flex w-full max-w-4xl shadow-lg rounded-lg overflow-hidden bg-white">
         {/* Left: Form */}
         <div className="w-full md:w-1/2 p-8">
