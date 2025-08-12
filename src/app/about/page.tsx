@@ -85,28 +85,6 @@ export default function About() {
           </div>
         </section>
 
-        {/* Đánh giá khách hàng */}
-    <section className="mb-10">
-  <h2 className="text-2xl sm:text-3xl font-bold uppercase mb-4 border-l-4 border-[#0A9300] pl-4 text-[#0A9300] drop-shadow-sm">
-    Khách hàng nói gì về NovaShop?
-  </h2>
-  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-    <div className="bg-[#F6FFF7] rounded-lg p-4 border border-[#0A9300] shadow">
-      <p className="italic">&quot;Sản phẩm chất lượng, giao hàng nhanh, tư vấn rất nhiệt tình. Sẽ tiếp tục ủng hộ NovaShop!&quot;</p>
-      <div className="mt-2 text-right font-semibold text-[#0A9300]">- Minh, Hà Nội</div>
-    </div>
-    <div className="bg-[#F6FFF7] rounded-lg p-4 border border-[#0A9300] shadow">
-      <p className="italic">&quot;Mua vợt Yonex ở đây giá tốt, hàng chuẩn chính hãng, rất yên tâm.&quot;</p>
-      <div className="mt-2 text-right font-semibold text-[#0A9300]">- Huy, TP.HCM</div>
-    </div>
-    <div className="bg-[#F6FFF7] rounded-lg p-4 border border-[#0A9300] shadow">
-      <p className="italic">&quot;Website dễ dùng, nhiều mẫu mã, hình ảnh rõ ràng. Đặt hàng cực kỳ tiện lợi.&quot;</p>
-      <div className="mt-2 text-right font-semibold text-[#0A9300]">- Lan, Đà Nẵng</div>
-    </div>
-  </div>
-</section>
-
-
         {/* Thông tin liên hệ */}
         <section className="mb-10">
           <h2 className="text-2xl sm:text-3xl font-bold uppercase mb-4 border-l-4 border-[#0A9300] pl-4 text-[#0A9300] drop-shadow-sm">

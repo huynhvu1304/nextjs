@@ -327,108 +327,108 @@ export default function HomePageSection() {
       <Banner />
       <main className="pt-10">
         {/* Container 3 đảm bảo */}
-<div className="px-4 sm:px-6 lg:px-10 bg-gray-50 py-4 sm:py-6">
-  <div className="container-custom max-w-7xl mx-auto">
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 py-4">
-      {/* Box 1 */}
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        className="flex items-center gap-2 bg-white rounded-2xl border border-green-200 p-3 sm:p-5 shadow-lg shadow-green-50/50 hover:shadow-green-100/70 transition-all duration-300 text-gray-700 w-full break-words min-h-[80px] sm:min-h-[100px]"
-      >
-        <div className="flex items-center justify-center w-9 h-9 sm:w-12 sm:h-12 sm:bg-green-100 rounded-full text-green-700">
-          <i className="fa-solid fa-truck text-base sm:text-xl"></i>
-        </div>
-        <div className="text-xs sm:text-sm">
-          <strong className="text-green-700 font-semibold text-sm sm:text-base">Toàn quốc</strong>
-          <div className="sm:hidden text-[9px] text-gray-500 font-normal leading-tight mt-0.5">
-            Giao hàng tận nơi, thanh toán khi nhận hàng
-          </div>
-          {/* Hiển thị trên Desktop, ẩn trên iPad và mobile */}
-          <div className="hidden sm:block md:hidden lg:block text-sm text-gray-600 mt-1 leading-snug">
-            Vận chuyển <span className="text-green-700 font-semibold">Toàn quốc</span>
-            <br />
-            Thanh toán khi nhận hàng
-          </div>
-        </div>
-      </motion.div>
+        <div className="px-4 sm:px-6 lg:px-10 bg-gray-50 py-4 sm:py-6">
+          <div className="container-custom max-w-7xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 py-4">
+              {/* Box 1 */}
+              <motion.div
+                variants={fadeInUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                className="flex items-center gap-2 bg-white rounded-2xl border border-green-200 p-3 sm:p-5 shadow-lg shadow-green-50/50 hover:shadow-green-100/70 transition-all duration-300 text-gray-700 w-full break-words min-h-[80px] sm:min-h-[100px]"
+              >
+                <div className="flex items-center justify-center w-9 h-9 sm:w-12 sm:h-12 sm:bg-green-100 rounded-full text-green-700">
+                  <i className="fa-solid fa-truck text-base sm:text-xl"></i>
+                </div>
+                <div className="text-xs sm:text-sm">
+                  <strong className="text-green-700 font-semibold text-sm sm:text-base">Toàn quốc</strong>
+                  <div className="sm:hidden text-[9px] text-gray-500 font-normal leading-tight mt-0.5">
+                    Giao hàng tận nơi, thanh toán khi nhận hàng
+                  </div>
+                  {/* Hiển thị trên Desktop, ẩn trên iPad và mobile */}
+                  <div className="hidden sm:block md:hidden lg:block text-sm text-gray-600 mt-1 leading-snug">
+                    Vận chuyển <span className="text-green-700 font-semibold">Toàn quốc</span>
+                    <br />
+                    Thanh toán khi nhận hàng
+                  </div>
+                </div>
+              </motion.div>
 
-      {/* Box 2 */}
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        className="flex items-center gap-2 bg-white rounded-2xl border border-green-200 p-3 sm:p-5 shadow-lg shadow-green-50/50 hover:shadow-green-100/70 transition-all duration-300 text-gray-700 w-full break-words min-h-[80px] sm:min-h-[100px]"
-      >
-        <div className="flex items-center justify-center w-9 h-9 sm:w-12 sm:h-12 sm:bg-green-100 rounded-full text-green-700">
-          <i className="fa-solid fa-circle-check text-base sm:text-xl"></i>
-        </div>
-        <div className="text-xs sm:text-sm">
-          <strong className="text-green-700 font-semibold text-sm sm:text-base">Chính hãng</strong>
-          <div className="sm:hidden text-[9px] text-gray-500 font-normal leading-tight mt-0.5">
-            Sản phẩm cam kết chính hãng, chất lượng
-          </div>
-          <div className="hidden sm:block md:hidden lg:block text-sm text-gray-600 mt-1 leading-snug">
-            Bảo đảm <span className="text-green-700 font-semibold">Chất lượng</span>
-            <br />
-            Sản phẩm chính hãng
-          </div>
-        </div>
-      </motion.div>
+              {/* Box 2 */}
+              <motion.div
+                variants={fadeInUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                className="flex items-center gap-2 bg-white rounded-2xl border border-green-200 p-3 sm:p-5 shadow-lg shadow-green-50/50 hover:shadow-green-100/70 transition-all duration-300 text-gray-700 w-full break-words min-h-[80px] sm:min-h-[100px]"
+              >
+                <div className="flex items-center justify-center w-9 h-9 sm:w-12 sm:h-12 sm:bg-green-100 rounded-full text-green-700">
+                  <i className="fa-solid fa-circle-check text-base sm:text-xl"></i>
+                </div>
+                <div className="text-xs sm:text-sm">
+                  <strong className="text-green-700 font-semibold text-sm sm:text-base">Chính hãng</strong>
+                  <div className="sm:hidden text-[9px] text-gray-500 font-normal leading-tight mt-0.5">
+                    Sản phẩm cam kết chính hãng, chất lượng
+                  </div>
+                  <div className="hidden sm:block md:hidden lg:block text-sm text-gray-600 mt-1 leading-snug">
+                    Bảo đảm <span className="text-green-700 font-semibold">Chất lượng</span>
+                    <br />
+                    Sản phẩm chính hãng
+                  </div>
+                </div>
+              </motion.div>
 
-      {/* Box 3 */}
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        className="flex items-center gap-2 bg-white rounded-2xl border border-green-200 p-3 sm:p-5 shadow-lg shadow-green-50/50 hover:shadow-green-100/70 transition-all duration-300 text-gray-700 w-full break-words min-h-[80px] sm:min-h-[100px]"
-      >
-        <div className="flex items-center justify-center w-9 h-9 sm:w-12 sm:h-12 sm:bg-green-100 rounded-full text-green-700">
-          <i className="fa-solid fa-credit-card text-base sm:text-xl"></i>
-        </div>
-        <div className="text-xs sm:text-sm">
-          <strong className="text-green-700 font-semibold text-sm sm:text-base">Thanh toán</strong>
-          <div className="sm:hidden text-[9px] text-gray-500 font-normal leading-tight mt-0.5">
-            Nhiều hình thức thanh toán tiện lợi
-          </div>
-          <div className="hidden sm:block md:hidden lg:block text-sm text-gray-600 mt-1 leading-snug">
-            Nhiều <span className="text-green-700 font-semibold">Phương thức</span>
-            <br />
-            Thanh toán tiện lợi
-          </div>
-        </div>
-      </motion.div>
+              {/* Box 3 */}
+              <motion.div
+                variants={fadeInUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                className="flex items-center gap-2 bg-white rounded-2xl border border-green-200 p-3 sm:p-5 shadow-lg shadow-green-50/50 hover:shadow-green-100/70 transition-all duration-300 text-gray-700 w-full break-words min-h-[80px] sm:min-h-[100px]"
+              >
+                <div className="flex items-center justify-center w-9 h-9 sm:w-12 sm:h-12 sm:bg-green-100 rounded-full text-green-700">
+                  <i className="fa-solid fa-credit-card text-base sm:text-xl"></i>
+                </div>
+                <div className="text-xs sm:text-sm">
+                  <strong className="text-green-700 font-semibold text-sm sm:text-base">Thanh toán</strong>
+                  <div className="sm:hidden text-[9px] text-gray-500 font-normal leading-tight mt-0.5">
+                    Nhiều hình thức thanh toán tiện lợi
+                  </div>
+                  <div className="hidden sm:block md:hidden lg:block text-sm text-gray-600 mt-1 leading-snug">
+                    Nhiều <span className="text-green-700 font-semibold">Phương thức</span>
+                    <br />
+                    Thanh toán tiện lợi
+                  </div>
+                </div>
+              </motion.div>
 
-      {/* Box 4 */}
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        className="flex items-center gap-2 bg-white rounded-2xl border border-green-200 p-3 sm:p-5 shadow-lg shadow-green-50/50 hover:shadow-green-100/70 transition-all duration-300 text-gray-700 w-full break-words min-h-[80px] sm:min-h-[100px]"
-      >
-        <div className="flex items-center justify-center w-9 h-9 sm:w-12 sm:h-12 sm:bg-green-100 rounded-full text-green-700">
-          <i className="fa-solid fa-headset text-base sm:text-xl"></i>
-        </div>
-        <div className="text-xs sm:text-sm">
-          <strong className="text-green-700 font-semibold text-sm sm:text-base">Đổi trả</strong>
-          <div className="sm:hidden text-[9px] text-gray-500 font-normal leading-tight mt-0.5">
-            Đổi sản phẩm mới nếu lỗi từ nhà sản xuất
+              {/* Box 4 */}
+              <motion.div
+                variants={fadeInUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                className="flex items-center gap-2 bg-white rounded-2xl border border-green-200 p-3 sm:p-5 shadow-lg shadow-green-50/50 hover:shadow-green-100/70 transition-all duration-300 text-gray-700 w-full break-words min-h-[80px] sm:min-h-[100px]"
+              >
+                <div className="flex items-center justify-center w-9 h-9 sm:w-12 sm:h-12 sm:bg-green-100 rounded-full text-green-700">
+                  <i className="fa-solid fa-headset text-base sm:text-xl"></i>
+                </div>
+                <div className="text-xs sm:text-sm">
+                  <strong className="text-green-700 font-semibold text-sm sm:text-base">Đổi trả</strong>
+                  <div className="sm:hidden text-[9px] text-gray-500 font-normal leading-tight mt-0.5">
+                    Đổi sản phẩm mới nếu lỗi từ nhà sản xuất
+                  </div>
+                  <div className="hidden sm:block md:hidden lg:block text-sm text-gray-600 mt-1 leading-snug">
+                    Đổi <span className="text-green-700 font-semibold">Sản phẩm</span>
+                    <br />
+                    Nếu lỗi từ nhà sản xuất
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </div>
-          <div className="hidden sm:block md:hidden lg:block text-sm text-gray-600 mt-1 leading-snug">
-            Đổi <span className="text-green-700 font-semibold">Sản phẩm</span>
-            <br />
-            Nếu lỗi từ nhà sản xuất
-          </div>
         </div>
-      </motion.div>
-    </div>
-  </div>
-</div>
 
         <FlashSale
           products={products}
@@ -442,7 +442,7 @@ export default function HomePageSection() {
           <div className="flex justify-center items-center my-12">
             <div className="text-center">
               <h2 className="text-3xl sm:text-4xl font-bold text-green-700">
-                Sản phẩm bán chạy nhất
+                Sản phẩm hot nhất
               </h2>
               <p className="text-sm sm:text-base text-gray-500 mt-2 italic max-w-xl mx-auto">
                 “Khám phá những mẫu giày và vợt cầu lông đang được yêu thích và lựa chọn nhiều nhất hiện nay tại Shoes VN.”
