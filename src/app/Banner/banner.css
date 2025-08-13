@@ -1,7 +1,7 @@
 /* Hiệu ứng hover cho nút Đăng ký */
 .signup-button:hover {
   transform: scale(1.05) translateX(5px);
-  background-color: #15803d; /* green-700 */
+  background-color: #15803d; 
 }
 
 /* Hiệu ứng nhấn cho nút Đăng ký */
@@ -12,7 +12,7 @@
 /* Hiệu ứng hover cho nút Giới thiệu */
 .about-button:hover {
   transform: scale(1.05) translateX(5px);
-  background-color: #d1d5db; /* gray-300 */
+  background-color: #d1d5db; 
 }
 
 /* Hiệu ứng nhấn cho nút Giới thiệu */

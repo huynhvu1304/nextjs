@@ -478,12 +478,12 @@ const Header = () => {
               <div className="flex items-center gap-4 relative" ref={menuRef}>
                 {userName ? (
                   <>
-                    <div className="text-[#1a7a00] font-semibold">Xin chào! {userName}</div>
+                    {/* <div className="text-[#1a7a00] font-semibold">{userName}</div> */}
                     <button onClick={() => setMenuOpen(!menuOpen)} className="w-10 h-10 bg-[#e7e3e3] text-white rounded-full hover:bg-green-600 transition flex items-center justify-center" > 
                
                       {userImgSrc ? (
                     <img
-                      src={userImgSrc} // Sử dụng state mới
+                      src={userImgSrc} 
                       alt="User Avatar"
                       className="w-8 h-8 rounded-full object-cover"
                       onError={handleImageError} 
@@ -629,14 +629,14 @@ const Header = () => {
                     <Link
                       href="/login"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block border-2 border-[#1a7a00] text-[#1a7a00] rounded px-4 py-2 text-center font-semibold"
+                      className="block mt-auto border-2 border-[#1a7a00] text-[#1a7a00] rounded px-4 py-2 text-center font-semibold"
                     >
                       Đăng nhập
                     </Link>
                     <Link
                       href="/signup"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block bg-[#1a7a00] text-white rounded px-4 py-2 text-center font-semibold"
+                      className="block bg-[#1a7a00] text-white rounded px-4 py-2 mt-2 text-center font-semibold"
                     >
                       Đăng ký
                     </Link>

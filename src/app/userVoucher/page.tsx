@@ -281,7 +281,6 @@ const UserVoucherPage = () => {
     );
   };
 
-  // Filter options with enhanced styling
   const filterOptions = [
     {
       key: 'all' as const,
@@ -375,7 +374,7 @@ const UserVoucherPage = () => {
             <FaCheckCircle className="text-2xl text-blue-500" />
           </div>
         </div>
-                 <div className="bg-gradient-to-br from-red-50 to-orange-100 p-4 rounded-2xl border border-red-200 transform hover:scale-105 transition-all duration-300">
+        <div className="bg-gradient-to-br from-red-50 to-orange-100 p-4 rounded-2xl border border-red-200 transform hover:scale-105 transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
               <div className="text-2xl sm:text-3xl font-bold text-red-600">{getVoucherCount('expired')}</div>
@@ -471,11 +470,11 @@ const UserVoucherPage = () => {
                 : 'Không có voucher nào trong danh mục này'
               }
             </p>
-            {filter === 'all' && (
-                <button className="mt-6 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105">
-                 Khám phá voucher mới
-               </button>
-            )}
+            {/* {filter === 'all' && (
+              //   <button className="mt-6 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105">
+              //    Khám phá voucher mới
+              //  </button>
+            )} */}
           </div>
         </div>
       ) : (

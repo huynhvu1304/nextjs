@@ -23,26 +23,47 @@ export default function About() {
         </h1>
 
         {/* Giới thiệu về NovaShop */}
-        <section className="about-section mb-10 bg-[#F6FFF7] rounded-lg p-6 border border-[#0A9300] shadow-sm">
+        <section className="warranty-section mb-10 bg-[#F6FFF7] rounded-lg p-6 border border-[#0A9300] shadow-sm">
           <h2 className="text-xl sm:text-2xl font-bold text-[#0A9300] mb-3 uppercase tracking-wide">
-            NovaShop - Trang web bán hàng online vợt & giày cầu lông chính hãng
+            Chính Sách Bảo Hành - NovaShop
           </h2>
           <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-2">
-            <strong>NovaShop</strong> là địa chỉ mua sắm trực tuyến uy tín, chuyên cung cấp các sản phẩm{" "}
+            <strong>NovaShop</strong> là địa chỉ mua sắm trực tuyến uy tín chuyên cung cấp{" "}
             <span className="font-semibold text-[#0A9300]">vợt cầu lông</span> và{" "}
-            <span className="font-semibold text-[#0A9300]">giày thể thao</span> chính hãng từ các thương hiệu hàng đầu như{" "}
-            <span className="font-bold text-[#0A9300]">Yonex</span>, <span className="font-bold text-[#0A9300]">Li-Ning</span> và{" "}
-            <span className="font-bold text-[#0A9300]">Kumpoo</span>. Chúng tôi cam kết mang đến trải nghiệm mua sắm hiện đại, an toàn và tiện lợi cho mọi khách hàng.
+            <span className="font-semibold text-[#0A9300]">giày thể thao</span> chính hãng. 
+            Chúng tôi cam kết mang đến sản phẩm chất lượng cao cùng chính sách bảo hành rõ ràng, minh bạch.
           </p>
+
+          <h3 className="text-lg sm:text-xl font-semibold text-[#0A9300] mt-4 mb-2">
+            1. Thời gian bảo hành
+          </h3>
           <ul className="list-disc list-inside text-gray-700 text-base sm:text-lg mb-2 space-y-1">
-            <li>Sản phẩm chính hãng 100%, bảo hành rõ ràng.</li>
-            <li>Giao diện website thân thiện, tối ưu UI/UX cho cả máy tính và điện thoại.</li>
-            <li>Thông tin sản phẩm chi tiết, hình ảnh sắc nét, chuẩn SEO giúp khách hàng dễ dàng tìm kiếm.</li>
-            <li>Hỗ trợ tư vấn tận tâm, giao hàng nhanh chóng toàn quốc.</li>
-            <li>Chính sách đổi trả linh hoạt, bảo mật thông tin khách hàng tuyệt đối.</li>
+            <li>Sản phẩm chính hãng: 6 – 12 tháng tùy loại.</li>
+            <li>Phụ kiện và quà tặng kèm: 1 – 3 tháng (nếu có).</li>
           </ul>
-          <p className="text-gray-700 text-base sm:text-lg leading-relaxed">
-            NovaShop luôn đặt trải nghiệm người dùng lên hàng đầu, mang đến sự an tâm và hài lòng cho mọi khách hàng khi mua sắm online các sản phẩm cầu lông chất lượng cao.
+
+          <h3 className="text-lg sm:text-xl font-semibold text-[#0A9300] mt-4 mb-2">
+            2. Điều kiện bảo hành
+          </h3>
+          <ul className="list-disc list-inside text-gray-700 text-base sm:text-lg mb-2 space-y-1">
+            <li>Còn nguyên tem bảo hành và phiếu mua hàng từ NovaShop.</li>
+            <li>Lỗi kỹ thuật từ nhà sản xuất, không do người sử dụng gây ra.</li>
+            <li>Chưa bị sửa chữa hoặc thay đổi linh kiện ngoài hệ thống bảo hành của NovaShop.</li>
+          </ul>
+
+          <h3 className="text-lg sm:text-xl font-semibold text-[#0A9300] mt-4 mb-2">
+            3. Trường hợp không được bảo hành
+          </h3>
+          <ul className="list-disc list-inside text-gray-700 text-base sm:text-lg mb-2 space-y-1">
+            <li>Hư hỏng do rơi vỡ, va đập, ngấm nước, cháy nổ.</li>
+            <li>Bị can thiệp sửa chữa bởi đơn vị không thuộc NovaShop.</li>
+            <li>Hết thời hạn bảo hành.</li>
+          </ul>
+
+          <p className="text-gray-700 text-base sm:text-lg leading-relaxed italic mt-4">
+            Mọi thắc mắc về bảo hành, vui lòng liên hệ hotline:{" "}
+            <span className="font-semibold">0794346995</span> hoặc email:{" "}
+            <span className="font-semibold">novashop12@gmail.com</span>.
           </p>
         </section>
 
@@ -92,7 +113,7 @@ export default function About() {
           </h2>
           <div className="text-base sm:text-lg text-gray-700 space-y-1">
             <div><span className="font-semibold">Địa chỉ:</span> Ấp Bàu Bông xã Phước An, huyện Nhơn Trạch, Đồng Nai</div>
-            <div><span className="font-semibold">Hotline:</span> <a href="tel:079434699" className="text-[#0A9300] hover:underline">079434699</a></div>
+            <div><span className="font-semibold">Hotline:</span> <a href="tel:079434699" className="text-[#0A9300] hover:underline">0794346995</a></div>
             <div><span className="font-semibold">Email:</span> <a href="mailto:novashopvn12@gmail.com" className="text-[#0A9300] hover:underline">novashopvn12@gmail.com</a></div>
             <div><span className="font-semibold">Facebook:</span> <a href="https://www.facebook.com/novashopteam" target="_blank" rel="noopener noreferrer" className="text-[#0A9300] hover:underline">facebook.com/novashop</a></div>
           </div>

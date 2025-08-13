@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { SpinWheelService, SpinEligibilityResponse, SpinResult, SpinWheelVoucher } from '../../service/spinWheel.service';
 import { toast } from 'react-toastify';
 import './SpinWheel.css';
+import { IoCloseCircleOutline } from 'react-icons/io5';
 
 interface SpinWheelProps {
   isOpen: boolean;
@@ -24,17 +25,16 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ isOpen, onClose }) => {
   const wheelRef = useRef<HTMLDivElement>(null);
   const pendingResultRef = useRef<SpinResult | null>(null);
 
-  // Close resets state
   useEffect(() => {
     if (!isOpen) {
       setIsSpinning(false);
       setShowResult(false);
       setSpinResult(null);
-      setRotation((r) => r % 360); // keep position
+      setRotation((r) => r % 360); 
     }
   }, [isOpen]);
 
-  // Load eligibility + vouchers when opened
+  
   useEffect(() => {
     if (!isOpen) return;
 
@@ -60,11 +60,11 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ isOpen, onClose }) => {
     loadData();
   }, [isOpen]);
 
-  // Countdown when not eligible
+
   useEffect(() => {
     if (countdown === null) return;
     if (countdown <= 0) {
-      // auto re-check
+      
       (async () => {
         try {
           const elig = await SpinWheelService.checkEligibility();
@@ -160,7 +160,7 @@ const getDiscountText = (v: SpinWheelVoucher) => {
       const result = await SpinWheelService.spinWheel();
       pendingResultRef.current = result;
 
-      // Determine target index by code; when no prize, code is null, match by 'NO_PRIZE'
+     
       let targetIndex = 0;
       const targetCode = result.voucher?.code ?? 'NO_PRIZE';
       const idx = wheelItems.findIndex((v) => v.code === targetCode);
@@ -168,20 +168,19 @@ const getDiscountText = (v: SpinWheelVoucher) => {
 
       const centerAngle = targetIndex * anglePerSegment + anglePerSegment / 2;
       const normalizedPrev = ((rotation % 360) + 360) % 360;
-      // Randomize slightly within segment for natural feel
+     
       const jitter = Math.max(5, anglePerSegment * 0.2);
       const offset = (Math.random() - 0.5) * Math.min(jitter, anglePerSegment * 0.8);
-      // CSS conic-gradient 0deg is at 3 o'clock. Pointer is at 12 o'clock (270deg).
-      // Bring segment center to 270deg under the pointer.
+     
       const pointerAngle = 350;
       const desiredAtPointer = (360 - ((centerAngle - pointerAngle) + offset) + 360) % 360;
       let deltaToFinal = desiredAtPointer - normalizedPrev;
       if (deltaToFinal < 0) deltaToFinal += 360;
-      const fullSpins = 6 * 360; // number of extra spins
+      const fullSpins = 6 * 360;
       const finalRotation = rotation + fullSpins + deltaToFinal;
 
       const onTransitionEnd = () => {
-        // cleanup listener
+      
         if (wheelRef.current) {
           wheelRef.current.removeEventListener('transitionend', onTransitionEnd);
         }
@@ -189,7 +188,7 @@ const getDiscountText = (v: SpinWheelVoucher) => {
         const r = pendingResultRef.current;
         setSpinResult(r || null);
         setShowResult(true);
-        // Update remaining locally for UX
+       
         if (r?.voucher) {
           setWheelItems((items) =>
             items.map((it) =>
@@ -197,7 +196,7 @@ const getDiscountText = (v: SpinWheelVoucher) => {
             )
           );
         }
-        // Refresh eligibility to start countdown
+       
         (async () => {
           try {
             const elig = await SpinWheelService.checkEligibility();
@@ -211,8 +210,7 @@ const getDiscountText = (v: SpinWheelVoucher) => {
         wheelRef.current.addEventListener('transitionend', onTransitionEnd, { once: true } as any);
       }
 
-      // Trigger rotation
-      // Force reflow to ensure transition applies when setting same-degree in quick succession
+      
       if (wheelRef.current) void wheelRef.current.offsetHeight;
       setRotation(finalRotation);
     } catch (err: any) {
@@ -229,7 +227,7 @@ const getDiscountText = (v: SpinWheelVoucher) => {
       <div className="spin-wheel-modal">
         <div className="spin-wheel-header">
           <h2>Vòng Quay May Mắn</h2>
-          <button className="close-button" onClick={onClose}>×</button>
+          <button className="close-button" onClick={onClose}><IoCloseCircleOutline /></button>
         </div>
 
         <div className="spin-wheel-content">
@@ -241,7 +239,7 @@ const getDiscountText = (v: SpinWheelVoucher) => {
                     {eligibility.message}
                     {!eligibility.canSpin && countdown !== null && (
                       <div className="remaining-time countdown">
-                        ⏰ Còn lại: {formatCountdown(countdown)}
+                        ⏰Còn lại: {formatCountdown(countdown)}
                       </div>
                     )}
                   </div>
@@ -280,12 +278,12 @@ const getDiscountText = (v: SpinWheelVoucher) => {
                   </h3>
                   {spinResult.voucher && (
                     <div className="voucher-details">
-                      <div className="voucher-code">
+                      {/* <div className="voucher-code">
                         <strong>Mã Voucher:</strong> {spinResult.voucher.code}
-                      </div>
-                      <div className="voucher-description">
+                      </div> */}
+                      {/* <div className="voucher-description">
                         <strong>Mô tả:</strong> {spinResult.voucher.description}
-                      </div>
+                      </div> */}
                       <div className="voucher-discount">
                         <strong>Giảm giá:</strong> {getDiscountText(spinResult.voucher as any)}
                       </div>
@@ -302,15 +300,15 @@ const getDiscountText = (v: SpinWheelVoucher) => {
                       <div className="voucher-expiry">
                         <strong>Hết hạn:</strong> {formatDate(spinResult.voucher.endDate)}
                       </div>
-                      <div className="voucher-remaining">
+                      {/* <div className="voucher-remaining">
                         <strong>Còn lại:</strong> {spinResult.voucher.remaining} voucher
-                      </div>
+                      </div> */}
                     </div>
                   )}
                   <div className="result-note">
                     {spinResult.spinResult === 'no_prize'
                       ? '😔 Rất tiếc, bạn chưa trúng thưởng lần này. Hãy thử lại vào lần sau nhé!'
-                      : '💡 Voucher đã được thêm vào tài khoản của bạn. Bạn có thể xem trong trang cá nhân.'}
+                      : '💡 Voucher đã được thêm vào kho voucher của bạn. Bạn có thể xem trong trang thông tin cá nhân.'}
                   </div>
                 </>
               )}

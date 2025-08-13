@@ -445,7 +445,7 @@ export default function HomePageSection() {
                 Sản phẩm hot nhất
               </h2>
               <p className="text-sm sm:text-base text-gray-500 mt-2 italic max-w-xl mx-auto">
-                “Khám phá những mẫu giày và vợt cầu lông đang được yêu thích và lựa chọn nhiều nhất hiện nay tại Shoes VN.”
+                “Khám phá những mẫu giày và vợt cầu lông đang được yêu thích và lựa chọn nhiều nhất hiện nay.”
               </p>
             </div>
           </div>
@@ -549,24 +549,24 @@ export default function HomePageSection() {
         </div>
 
       {/* Banner nhỏ */}
-    <div className="my-10">
-      <div className="container-custom">
-        <Link href="/products">
-          <motion.img
-            src="img/banner-sale.png"
-            alt="Banner Sale"
-            className="w-full rounded-lg shadow-md"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            viewport={{ once: true }}
-          />
-        </Link>
-      </div>
-    </div>
+        <div className="my-5">
+          <div className="container-custom">
+            <Link href="/products">
+              <motion.img
+                src="img/banner-sale.png"
+                alt="Banner Sale"
+                className="w-full rounded-lg shadow-md"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                viewport={{ once: true }}
+              />
+            </Link>
+          </div>
+        </div>
 
         {/* Show sản phẩm vợt */}
-        <div className="container-custom">
+        <div className="container-custom md:mt-[80px]">
           {loading && <p>Đang tải sản phẩm...</p>}
           {!loading && filteredProductsVot.length === 0 && (
             <p>Không có sản phẩm trong danh mục Vợt.</p>
@@ -704,7 +704,7 @@ export default function HomePageSection() {
         </div>
 
         {/* Banner nhỏ */}
-        <div className="container-custom">
+        <div className="container-custom md:mt-[80px]">
           <img
             src="img/banner_small_21.png"
             alt=""
@@ -713,7 +713,7 @@ export default function HomePageSection() {
         </div>
 
         {/* Show sản phẩm giày */}
-        <div className="container-custom">
+        <div className="container-custom md:mt-[80px] md:mb-[80px]">
           {loading && <p>Đang tải sản phẩm...</p>}
           {!loading && filteredProductsGiay.length === 0 && (
             <p>Không có sản phẩm trong danh mục Giày.</p>

@@ -59,11 +59,11 @@ const Banner = () => {
 
 
   return (
-    <div className="w-full overflow-hidden mt-0 md:mt-[20px] pb-0 md:pb-[40px]"> {/* Removed mobile bottom padding */}
+    <div className="w-full overflow-hidden mt-0 md:mt-[20px] pb-0 md:pb-[40px]"> 
       <div className="w-full container-custom mt-0 md:mt-[50px] mx-auto p-6 flex flex-col md:flex-row items-center justify-between">
         {/* Box trái - Hiển thị trên desktop, ẩn trên mobile */}
         <motion.div
-          className="w-full md:w-[55%] hidden md:block" // Ẩn trên mobile, hiển thị trên desktop
+          className="w-full md:w-[55%] hidden md:block" 
           variants={slideVariants}
           initial="hidden"
           whileInView="visible"
@@ -122,7 +122,7 @@ const Banner = () => {
               autoplay={{
                 delay: 2000,
                 disableOnInteraction: false,
-                pauseOnMouseEnter: true, // Thêm thuộc tính này
+                pauseOnMouseEnter: true,
               }}
               loop={true}
               grabCursor={true}
