@@ -112,13 +112,13 @@ const ChatbotPopup: React.FC<ChatbotPopupProps> = ({ showChat, setShowChat }) =>
                 }
             };
 
-            ws.current.onclose = () => {
-                console.log('WebSocket đã ngắt kết nối.');
-                setIsConnected(false);
-                setIsLoading(false);
-                addMessage('Rất tiếc, tôi đang ngoại tuyến hoặc kết nối bị gián đoạn. Vui lòng thử lại sau.', 'ai');
-                ws.current = null;
-            };
+            // ws.current.onclose = () => {
+            //     console.log('WebSocket đã ngắt kết nối.');
+            //     setIsConnected(false);
+            //     setIsLoading(false);
+            //     addMessage('Rất tiếc, tôi đang ngoại tuyến hoặc kết nối bị gián đoạn. Vui lòng thử lại sau.', 'ai');
+            //     ws.current = null;
+            // };
 
             ws.current.onerror = (error) => {
                 console.error('Lỗi WebSocket:', error);
