@@ -49,7 +49,7 @@ export default function ResetPasswordPage() {
       
 
       toast.success(data.message)
-       setTimeout(() => router.push('/users'), 2000)
+      setTimeout(() => router.push('/users'), 2000)
     } catch (err: any) {
       toast.error(err.message || 'Lỗi khi đặt lại mật khẩu')
     } finally {
@@ -60,11 +60,12 @@ export default function ResetPasswordPage() {
 
   return (
     <>
-    <div className="max-w-md mx-auto mt-20 mb-20 px-6 py-8 bg-white shadow-lg rounded-2xl border border-gray-200">
-        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
+    <div className="max-w-md mx-4 sm:mx-auto mt-20 mb-20 px-6 py-8 bg-white shadow-lg rounded-2xl border border-gray-200">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-gray-800">
           <i className="fas fa-lock text-green-600 mr-2"></i>
           Đặt lại mật khẩu
         </h1>
+
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Mật khẩu mới */}

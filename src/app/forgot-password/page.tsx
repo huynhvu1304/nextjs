@@ -43,8 +43,10 @@ export default function ForgotPasswordPage() {
 
   return (
     <>
-    <div className="max-w-md mx-auto my-20 p-8 bg-white rounded-lg border border-gray-300 shadow-lg">
-      <h1 className="text-2xl font-semibold mb-6 text-center text-gray-800">Quên mật khẩu</h1>
+   <div className="max-w-md mx-4 sm:mx-auto my-20 p-8 bg-white rounded-lg border border-gray-300 shadow-lg">
+      <h1 className="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-800">
+        Quên mật khẩu
+      </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="relative">
           <input

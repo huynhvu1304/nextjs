@@ -171,7 +171,7 @@ const Banner = () => {
             {/* Caption (Text) trên Banner - Chỉ hiển thị trên mobile */}
             <div className="absolute inset-0 z-20 flex flex-col justify-center items-center text-center p-4 md:hidden">
               <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 leading-tight">
-                <span className="text-green-300">Vợt cầu lông</span> – Cửa hàng uy tín
+                <span className="text-green-300">Vợt, giày cầu lông</span> – Cửa hàng uy tín
               </h1>
               {/* Mô tả ngắn hơn cho các kích thước mobile khác nhau */}
               <p className="text-sm text-gray-100 hidden sm:block leading-snug">
