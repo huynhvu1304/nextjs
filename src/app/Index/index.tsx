@@ -160,7 +160,7 @@ export default function HomePageSection() {
       (selectedBrandGiay ? p.brand?._id === selectedBrandGiay : true)
   );
 
-  const LIMIT = 8;
+  // const LIMIT = 8;
 
   const handleBrandClickVot = (brandId: string | null) => {
     setSelectedBrandVot(brandId);

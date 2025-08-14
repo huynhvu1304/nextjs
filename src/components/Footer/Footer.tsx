@@ -62,8 +62,7 @@ const Footer = () => {
             <ul className="space-y-3 text-sm">
               <li><a href="/about" className="text-gray-400 hover:text-white transition">Chính sách bảo hành</a></li>
               <li><a href="/about" className="text-gray-400 hover:text-white transition">Chính sách đổi trả</a></li>
-              <li><a href="/about" className="text-gray-400 hover:text-white transition">Phương thức thanh toán</a></li>
-              <li><a href="/about" className="text-gray-400 hover:text-white transition">Câu hỏi thường gặp</a></li>
+              <li><a href="/about" className="text-gray-400 hover:text-white transition">Quy trình đặt hàng</a></li>
             </ul>
           </div>
         </div>
