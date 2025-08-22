@@ -1,3 +1,4 @@
+"use client";
 import { API_URL, IMAGE_URL } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
