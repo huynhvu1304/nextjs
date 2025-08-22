@@ -1,0 +1,42 @@
+.dot-pulse {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #6d6d6d;
+  animation: dotPulse 1.2s infinite ease-in-out;
+  display: inline-block;
+  margin: 0 2px;
+}
+
+.dot-pulse::before,
+.dot-pulse::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #6d6d6d;
+  animation: dotPulse 1.2s infinite ease-in-out;
+}
+
+.dot-pulse::before {
+  left: -10px;
+  animation-delay: -0.4s;
+}
+
+.dot-pulse::after {
+  left: 10px;
+  animation-delay: 0.4s;
+}
+
+@keyframes dotPulse {
+  0%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
