@@ -1,7 +1,5 @@
 import { Suspense } from "react";
-import ProductPage from "./productpage";
-
-export const dynamic = "force-dynamic"; 
+import ProductPage from "./ProductPage"; // file bạn paste code ở trên
 
 export default function Page() {
   return (
