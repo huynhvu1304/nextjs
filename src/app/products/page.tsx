@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import ProductPage from "./ProductPage"; // file bạn paste code ở trên
+import ProductPage from "./ProductPage"; 
 
 export default function Page() {
   return (
