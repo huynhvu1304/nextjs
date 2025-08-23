@@ -1,7 +1,8 @@
-"use client";
+'use client';
+
+import { useRouter, useSearchParams } from "next/navigation";
 import { API_URL, IMAGE_URL } from "@/lib/api";
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/slices/cartSlice';
@@ -44,9 +45,9 @@ interface Product {
   brand?: Brand;
 }
 
-export default function ProductPage() {
-  const router = useRouter();
+export default function ProductsClient() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const [openSections, setOpenSections] = useState({
@@ -206,7 +207,7 @@ export default function ProductPage() {
         category: Object.fromEntries(categories.map(c => [c.name.toLowerCase(), false]))
       }));
     }
-    // eslint-disable-next-line
+     
   }, [brands, categories]);
 
   // Xử lý đóng/mở các phần

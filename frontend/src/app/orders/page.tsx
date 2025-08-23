@@ -286,6 +286,10 @@ const OrdersPage = () => {
     }
   };
 
+  const handleRepurchase = (productId: string) => {
+    router.push(`/detail/${productId}`); 
+  };
+
   return (
     <div className="container-custom mt-[20px] sm:mt-[100px]">
       <div className="flex items-center gap-3 mb-[30px]">
@@ -400,7 +404,7 @@ const OrdersPage = () => {
 
             <div className="flex items-center gap-4">
               <div className="text-sm text-gray-600">
-                Hiển thị <strong>{sortedOrders.length}</strong> trong tổng số <strong>{orders.length}</strong> đơn hàng
+                Hiển thị <strong className="text-green-600">{sortedOrders.length}</strong> trong tổng số <strong className="text-green-600">{orders.length}</strong> đơn hàng
               </div>
               <button
                 onClick={resetFilters}
@@ -426,79 +430,79 @@ const OrdersPage = () => {
             return (
            <div
               key={order._id}
-              className="mb-6 border-2 border-[#0A9300]/30 rounded-2xl overflow-hidden transition bg-white hover:shadow-lg"
+              className="mb-6 border-2 border-[#0A9300]/30 rounded-2xl overflow-hidden transition bg-white"
             >
               {/* Thông tin chính của đơn */}
-               <div
-                  className="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-[#e8ffe8] to-[#f8fff8] px-4 py-4 gap-2 w-full h-32"
-                >
-                  <div className="flex flex-col gap-1 w-full md:w-auto">
-                    {isClient && (
-                      <p className="text-xs sm:text-sm text-gray-600 flex items-center gap-1">
-                        <FaCalendarAlt className="text-[#0A9300]" />
-                        Ngày đặt:{" "}
-                        <span className="font-medium">
-                          {new Date(order.createdAt).toLocaleDateString("vi-VN")} -{" "}
-                          {new Date(order.createdAt).toLocaleTimeString("vi-VN", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </span>
-                      </p>
-                    )}
-                    <p className="text-xs sm:text-sm text-gray-500 mt-1 flex flex-wrap items-center gap-1">
-                      <FaMoneyBillWave className="text-[#0A9300]" />
-                      Thanh toán:{" "}
-                      <span className="capitalize font-medium">
-                        {translatePaymentMethod(order.payment?.method)}
-                      </span>{" "}
-                      <span>-</span>{" "}
-                      <span
-                        className={
-                          order.payment?.status === "paid"
-                            ? "text-green-600 font-semibold"
-                            : "text-red-500 font-semibold"
-                        }
-                      >
-                        {translatePaymentStatus(order.payment?.status)}
+              <div
+                className="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-[#e8ffe8] to-[#f8fff8] px-2 md:px-4 py-2 md:py-4 gap-2 w-full h-50 md:h-32"
+              >
+                <div className="flex flex-col gap-1 w-full md:w-auto">
+                  {isClient && (
+                    <p className="text-xs sm:text-sm text-gray-600 flex items-center gap-1">
+                      {/* <FaCalendarAlt className="text-[#0A9300]" /> */}
+                      Ngày đặt:{" "}
+                      <span className="font-medium">
+                        {new Date(order.createdAt).toLocaleDateString("vi-VN")} -{" "}
+                        {new Date(order.createdAt).toLocaleTimeString("vi-VN", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
                       </span>
                     </p>
-                  </div>
-                  <div className="flex flex-col items-end gap-1 ml-auto w-full md:w-auto mt-2 md:mt-0">
-                    <p className="flex items-center gap-1">
-                      <span className="font-medium text-gray-600">Trạng thái:</span>
-                      <span className={`font-semibold flex items-center gap-1 ${
-                        order.status === "cancelled"
-                          ? "text-red-600"
-                          : order.status === "delivered"
-                          ? "text-[#0A9300]"
-                          : "text-yellow-600"
-                      }`}>
-                        {translateStatus(order.status)}
-                      </span>
-                    </p>
-                    <p className="text-red-600 font-bold text-lg sm:text-xl">
-                      {order.totalAmount.toLocaleString("vi-VN")} ₫
-                    </p>
-                    {order.status === "pending" && (
-                      <button
-                        onClick={() => openCancelPopup(order._id)}
-                        className="mt-2 text-xs sm:text-sm text-white bg-red-600 border border-red-600 px-4 py-1.5 rounded-full hover:bg-white hover:text-red-600 transition font-semibold shadow"
-                      >
-                        Hủy đơn
-                      </button>
-                    )}
-                  </div>
-                  <button
-                    onClick={() => toggleExpand(order._id)}
-                    className="text-[#0A9300] hover:text-black mt-2 md:mt-0 ml-2 p-2 rounded-full border border-[#0A9300]/20 bg-white shadow transition"
-                    title={isExpanded ? "Thu gọn" : "Xem chi tiết"}
-                  >
-                    <i
-                      className={`fa-solid ${isExpanded ? "fa-chevron-up" : "fa-chevron-down"} text-lg`}
-                    ></i>
-                  </button>
+                  )}
+                  <p className="text-xs sm:text-sm md:text-base text-gray-500 mt-1 flex flex-wrap items-center gap-1">
+                    {/* <FaMoneyBillWave className="text-[#0A9300]" /> */}
+                    Thanh toán:{" "}
+                    <span className="capitalize font-medium">
+                      {translatePaymentMethod(order.payment?.method)}
+                    </span>{" "}
+                    <span>-</span>{" "}
+                    <span
+                      className={
+                        order.payment?.status === "paid"
+                          ? "text-green-600 font-semibold"
+                          : "text-red-500 font-semibold"
+                      }
+                    >
+                      {translatePaymentStatus(order.payment?.status)}
+                    </span>
+                  </p>
                 </div>
+                <div className="flex flex-col items-end gap-1 ml-auto w-full md:w-auto mt-1 md:mt-0">
+                  <p className="flex items-center gap-1">
+                    <span className="text-xs sm:text-sm md:text-base font-medium text-gray-600">Trạng thái:</span>
+                    <span className={`font-semibold flex items-center gap-1 ${
+                      order.status === "cancelled"
+                        ? "text-red-600"
+                        : order.status === "delivered"
+                        ? "text-[#0A9300]"
+                        : "text-yellow-600"
+                    }`}>
+                      {translateStatus(order.status)}
+                    </span>
+                  </p>
+                  <div className="text-sm sm:text-base text-red-600 font-bold">
+                    {order.totalAmount.toLocaleString("vi-VN")} ₫
+                  </div>
+                  {order.status === "pending" && (
+                    <button
+                      onClick={() => openCancelPopup(order._id)}
+                      className="mt-2 text-xs sm:text-sm text-white bg-red-600 border border-red-600 px-3 md:px-4 py-1 rounded-full hover:bg-white hover:text-red-600 transition font-semibold shadow"
+                    >
+                      Hủy đơn
+                    </button>
+                  )}
+                </div>
+                <button
+                  onClick={() => toggleExpand(order._id)}
+                  className="text-[#0A9300] hover:text-black mt-2 md:mt-0 ml-2 p-1.5 md:p-2 rounded-full border border-[#0A9300]/20 bg-white shadow transition"
+                  title={isExpanded ? "Thu gọn" : "Xem chi tiết"}
+                >
+                  <i
+                    className={`fa-solid ${isExpanded ? "fa-chevron-up" : "fa-chevron-down"} text-lg`}
+                  ></i>
+                </button>
+              </div>
 
                     {/* Chi tiết sản phẩm trong đơn - Sử dụng AnimatePresence và motion.div */}
                     <AnimatePresence>
@@ -595,7 +599,7 @@ const OrdersPage = () => {
                             {order.items.map((item, idx) => (
                               <div
                                 key={idx}
-                                className="flex items-center gap-4 border-t py-4 first:border-t-0 transition rounded-xl"
+                                className="flex items-center gap-4 py-4 first:border-t-0 transition rounded-xl"
                               >
                                 <img
                                   src={`${IMAGE_URL}/${item.variant.image}`}
@@ -607,21 +611,43 @@ const OrdersPage = () => {
                                   <div className="text-xs sm:text-sm text-gray-500 mt-1">
                                     Size: <span className="font-medium">{item.variant.size}</span> | Màu: <span className="font-medium">{item.variant.color}</span>
                                   </div>
-                                </div>
-                                <div className="text-sm sm:text-base font-medium">x{item.quantity}</div>
-                                <div className="text-sm sm:text-base text-right text-red-600 font-bold min-w-[80px]">
-                                  {item.price.toLocaleString("vi-VN")} ₫
-                                </div>
-                                {order.status === "delivered" && order.payment?.status === "paid" && item.productId && (
-                                  <div className="mt-2">
-                                    <button
-                                      onClick={() => handleViewProductDetail(item.productId!)}
-                                      className="text-xs sm:text-sm bg-white text-green-600 border border-green-600 px-3 py-1 rounded hover:bg-green-600 hover:text-white transition font-semibold"
-                                    >
-                                      Đánh giá
-                                    </button>
+                                  <div className="text-xs sm:text-sm text-gray-600 mt-1">
+                                    Số lượng: <span className="font-semibold">{item.quantity}</span>
                                   </div>
-                                )}
+                                </div>
+                                <div className="flex flex-col items-end min-w-[100px]">
+                                  <div className="text-sm sm:text-base text-red-600 font-bold">
+                                    {item.price.toLocaleString("vi-VN")} ₫
+                                  </div>
+                                  {/* Đơn đã giao: hiện cả Đánh giá và Mua lại */}
+                                  {order.status === "delivered" && item.productId && (
+                                    <div className="mt-2 flex gap-2">
+                                      <button
+                                        onClick={() => handleViewProductDetail(item.productId!)}
+                                        className="text-xs sm:text-sm bg-white text-green-600 border-2 border-green-600 px-3 py-1 rounded hover:bg-green-600 hover:text-white transition font-semibold"
+                                      >
+                                        Đánh giá
+                                      </button>
+                                      <button
+                                        onClick={() => handleRepurchase(item.productId!)}
+                                        className="text-xs sm:text-sm bg-white text-red-600 border-2 border-red-600 px-3 py-1 rounded hover:bg-red-600 hover:text-white transition font-semibold"
+                                      >
+                                        Mua lại
+                                      </button>
+                                    </div>
+                                  )}
+                                  {/* Đơn đã hủy: chỉ hiện Mua lại */}
+                                  {order.status === "cancelled" && item.productId && (
+                                    <div className="mt-2 flex gap-2">
+                                      <button
+                                        onClick={() => handleRepurchase(item.productId!)}
+                                        className="text-xs sm:text-sm bg-white text-red-600 border-2 border-red-600 px-3 py-1 rounded hover:bg-red-600 hover:text-white transition font-semibold"
+                                      >
+                                        Mua lại
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
                               </div>
                             ))}
                           </div>

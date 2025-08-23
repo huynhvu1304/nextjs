@@ -5,8 +5,8 @@
   "homepage": "https://novashop.io.vn",
   "scripts": {
     "dev": "next dev -p 4000",
-    "build": "next build",
-  "start": "NODE_ENV=production node server.js"
+     "build": "next build",
+  "start": "next start"
   },
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^2.1.1",
