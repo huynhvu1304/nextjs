@@ -9,7 +9,7 @@ interface ChatbotPopupProps {
     setShowChat: (show: boolean) => void;
 }
 
-const CHAT_SERVER_URL = 'ws://localhost:3000';
+const CHAT_SERVER_URL = 'wss://backend.novashop.io.vn';
 
 const ChatbotPopup: React.FC<ChatbotPopupProps> = ({ showChat, setShowChat }) => {
     const [inputMessage, setInputMessage] = useState('');
