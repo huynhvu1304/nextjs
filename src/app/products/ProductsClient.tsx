@@ -59,6 +59,11 @@ export default function ProductsClient() {
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Di chuyển lên đây
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [categories, setCategories] = useState<{ _id: string; name: string }[]>([]);
+
   type Filters = {
     price: {
       under300: boolean;
@@ -108,19 +113,22 @@ export default function ProductsClient() {
   // Đọc tham số category từ URL và cập nhật filters.category
   useEffect(() => {
     const category = searchParams.get("category");
-    if (category === "racket" && !filters.category.racket) {
+    console.log("Query param category:", category);
+    console.log("Categories:", categories);
+    if (category && categories.length > 0) {
+      const newCategoryFilter = Object.fromEntries(
+        categories.map((c) => [
+          c.name.toLowerCase(),
+          c.name.toLowerCase() === category.toLowerCase(),
+        ])
+      );
+      console.log("Set filters.category:", newCategoryFilter);
       setFilters((prev) => ({
         ...prev,
-        category: { ...prev.category, racket: true, shoes: false }
+        category: newCategoryFilter,
       }));
     }
-    if (category === "shoes" && !filters.category.shoes) {
-      setFilters((prev) => ({
-        ...prev,
-        category: { ...prev.category, shoes: true, racket: false }
-      }));
-    }
-  }, [searchParams]);
+  }, [searchParams, categories]);
 
   // Lấy dữ liệu sản phẩm
   useEffect(() => {
@@ -161,10 +169,6 @@ export default function ProductsClient() {
     fetchFavorites();
   }, []);
 
-  // State cho brands và categories động
-  const [brands, setBrands] = useState<Brand[]>([]);
-  const [categories, setCategories] = useState<{ _id: string; name: string }[]>([]);
-
   // Lấy dữ liệu brands và categories từ API
   useEffect(() => {
     async function fetchBrands() {
@@ -202,13 +206,18 @@ export default function ProductsClient() {
       }));
     }
     if (categories.length > 0) {
+      const categoryParam = searchParams.get("category");
+      const newCategoryFilter = Object.fromEntries(categories.map(c => [
+        c.name.toLowerCase(),
+        categoryParam ? c.name.toLowerCase() === categoryParam.toLowerCase() : false
+      ]));
+      console.log("Set filters.category (brands/categories effect):", newCategoryFilter);
       setFilters(prev => ({
         ...prev,
-        category: Object.fromEntries(categories.map(c => [c.name.toLowerCase(), false]))
+        category: newCategoryFilter
       }));
     }
-     
-  }, [brands, categories]);
+  }, [brands, categories, searchParams]);
 
   // Xử lý đóng/mở các phần
   const toggleSection = (section: 'price' | 'brand' | 'category') => {

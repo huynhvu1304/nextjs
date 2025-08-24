@@ -100,13 +100,13 @@ const ChatbotPopup: React.FC<ChatbotPopupProps> = ({ showChat, setShowChat }) =>
                 }
             };
 
-            // ws.current.onclose = () => {
-            //     console.log('WebSocket đã ngắt kết nối.');
-            //     setIsConnected(false);
-            //     setIsLoading(false);
-            //     addMessage('Rất tiếc, tôi đang ngoại tuyến hoặc kết nối bị gián đoạn. Vui lòng thử lại sau.', 'ai');
-            //     ws.current = null;
-            // };
+            ws.current.onclose = () => {
+                console.log('WebSocket đã ngắt kết nối.');
+                setIsConnected(false);
+                setIsLoading(false);
+                addMessage('Rất tiếc, tôi đang ngoại tuyến hoặc kết nối bị gián đoạn. Vui lòng thử lại sau.', 'ai');
+                ws.current = null;
+            };
 
             ws.current.onerror = (error) => {
                 console.error('Lỗi WebSocket:', error);
@@ -168,7 +168,7 @@ const ChatbotPopup: React.FC<ChatbotPopupProps> = ({ showChat, setShowChat }) =>
 
     return (
         <div
-            className="fixed right-4 bottom-24 sm:bottom-20 bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden z-50 w-[90vw] max-w-[420px] h-[65vh] sm:w-[420px] sm:h-[500px]"
+            className="fixed right-4 bottom-24 sm:bottom-20 bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden z-50 w-[90vw] max-w-[420px] h-[65vh] "
         >
             <div className="bg-green-600 text-white p-4 text-lg font-semibold flex justify-between items-center">
                 <span>Chatbot Hỗ Trợ Cầu Lông</span>

@@ -587,9 +587,10 @@ export default function HomePageSection() {
                 className="w-full h-full object-cover transition-transform duration-400 group-hover:scale-105 group-hover:opacity-90"
               />
               <Link
-                onClick={() => handleViewAll('racket')}
-                className="absolute top-3/4 left-1/2 -translate-x-1/2 bg-green-700 text-white px-5 py-2.5 rounded-md font-bold z-20 shadow-lg cursor-pointer" href={""}              >
-                Xem tất cả
+                href={`/products?category=vợt cầu lông`}
+                className="absolute top-3/4 left-1/2 -translate-x-1/2 bg-green-700 text-white px-7 py-2.5 min-w-[140px] rounded-md font-bold z-20 shadow-lg cursor-pointer text-center text-sm whitespace-nowrap"
+              >
+                Xem tất cả Vợt
               </Link>
             </motion.div>
 
@@ -832,9 +833,10 @@ export default function HomePageSection() {
                 className="w-full h-full object-cover transition-transform duration-400 group-hover:scale-105 group-hover:opacity-90"
               />
               <Link
-                onClick={() => handleViewAll('shoes')}
-                className="absolute top-3/4 left-1/2 -translate-x-1/2 bg-green-700 text-white px-5 py-2.5 rounded-md font-bold z-20 shadow-lg cursor-pointer" href={""}              >
-                Xem tất cả
+                href={`/products?category=giày thể thao`}
+                className="absolute top-3/4 left-1/2 -translate-x-1/2 bg-green-700 text-white px-7 py-2.5 min-w-[140px] rounded-md font-bold z-20 shadow-lg cursor-pointer text-center text-sm whitespace-nowrap"
+              >
+                Xem tất cả Giày
               </Link>
             </motion.div>
           </div>

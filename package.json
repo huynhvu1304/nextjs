@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://novashop.io.vn",
-   "scripts": {
+  "scripts": {
     "dev": "next dev -p 4000",
     "build": "next build",
   "start": "NODE_ENV=production node server.js"

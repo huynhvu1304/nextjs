@@ -1246,7 +1246,9 @@ const getFlashSaleQuantity = () => {
           {/* Kích thước */}
           <div className="mb-5">
             <label className="block mb-2 font-bold text-gray-700">
-              Kích thước:
+              {product.categoryId?.name === "Vợt cầu lông"
+               ? "Trọng lượng:"
+                : "Kích thước:"}
             </label>
             <div className="flex gap-3 flex-wrap">
               {sizes.map((size) => {
