@@ -487,7 +487,7 @@ const OrdersPage = () => {
               >
                 {/* Thông tin chính của đơn */}
                 <div
-                  className="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-[#e8ffe8] to-[#f8fff8] px-2 md:px-4 py-2 md:py-4 gap-2 w-full h-50 md:h-32"
+                  className="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-[#e8ffe8] to-[#f8fff8] px-2 md:px-4 py-2 md:py-4 gap-2 w-full h-50 md:h-32 pt-6 sm:pt-0"
                 >
                   <div className="flex flex-col gap-1 w-full md:w-auto">
                     {/* Hiển thị mã đơn hàng */}
@@ -548,7 +548,7 @@ const OrdersPage = () => {
                       </span>
                     </p>
                   </div>
-                  <div className="flex flex-col items-end gap-1 ml-auto w-full md:w-auto mt-1 md:mt-0">
+                  <div className="flex flex-col items-end gap-1 ml-auto w-full md:w-auto mt-1 md:mt-0 pt-6 sm:pt-0">
                     <p className="flex items-center gap-1">
                       <span className="text-xs sm:text-sm md:text-base font-medium text-gray-600">Trạng thái:</span>
                       <span className={`font-semibold flex items-center gap-1 ${
@@ -578,12 +578,15 @@ const OrdersPage = () => {
                   </div>
                   <button
                     onClick={() => toggleExpand(order._id)}
-                    className="text-[#0A9300] hover:text-black mt-2 md:mt-0 ml-2 p-1.5 md:p-2 rounded-full border border-[#0A9300]/20 bg-white shadow transition"
+                    className="text-[#0A9300] hover:text-black mt-2 md:mt-0 ml-2 p-1.5 md:p-2 bg-white shadow transition flex items-center border rounded sm:rounded-full sm:border-[#0A9300]/20"
                     title={isExpanded ? "Thu gọn" : "Xem chi tiết"}
                   >
-                    <i
-                      className={`fa-solid ${isExpanded ? "fa-chevron-up" : "fa-chevron-down"} text-lg`}
-                    ></i>
+                    <span className="inline sm:hidden text-xs font-semibold">
+                      {isExpanded ? "Thu gọn" : "Xem chi tiết"}
+                    </span>
+                    <span className="hidden sm:inline">
+                      <i className={`fa-solid ${isExpanded ? "fa-chevron-up" : "fa-chevron-down"} text-lg`} />
+                    </span>
                   </button>
                 </div>
 
@@ -724,7 +727,7 @@ const OrdersPage = () => {
                                       <div className="mt-2 flex gap-2">
                                         <button
                                           onClick={() => handleRepurchase(item.productId!)}
-                                          className="text-xs sm:text-sm bg-white text-red-600 border-2 border-red-600 px-3 py-1 rounded hover:bg-red-600 hover:text-white transition font-semibold"
+                                          className="text-xs sm:text-sm bg-[#0A9300] text-white border-2 border-[#0A9300] px-3 py-1 rounded font-semibold"
                                         >
                                           Mua lại
                                         </button>
@@ -775,7 +778,7 @@ const OrdersPage = () => {
             >
               <i className="fa-solid fa-xmark text-xl"></i>
             </button>
-            <h2 className="text-lg font-bold mb-4 text-[#0A9300]">Chọn lý do hủy đơn</h2>
+            <h2 className="text-lg font-bold mb-4 text-[#0A9300]">Vui lòng chọn lý do hủy đơn</h2>
             <form
               onSubmit={e => {
                 e.preventDefault();

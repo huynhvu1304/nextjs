@@ -24,8 +24,10 @@ import { Variant } from "@/types/variant.interface";
 import { Category } from "@/types/category.interface";
 import { Brand } from "@/types/brand.interface";
 import Link from "next/link";
-
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 export default function HomePageSection() {
   const [isLoading, setIsLoading] = useState(true);
@@ -438,7 +440,7 @@ export default function HomePageSection() {
         />
 
         {/* Sản phẩm hot */}
-        <div className="container-custom">
+        <div className="container-custom relative">
           <div className="flex justify-center items-center my-12">
             <div className="text-center">
               <h2 className="text-3xl sm:text-4xl font-bold text-green-700">
@@ -449,94 +451,119 @@ export default function HomePageSection() {
               </p>
             </div>
           </div>
-          <motion.div
-            className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5"
-          >
-            {loading && <p>Đang tải sản phẩm...</p>}
-            {!loading && hotProducts.length === 0 && (
-              <p>Không có sản phẩm hot nào.</p>
-            )}
-            {!loading &&
-              hotProducts.slice(0, 5).map((product, index) => (
-                <motion.div
-                  key={product._id}
-                  variants={productFadeIn}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ delay: index * 0.15, duration: 0.5, ease: "easeOut" }}
-                  className="relative border border-gray-300 rounded-lg p-3 bg-white shadow-md text-center font-sans z-10"
-                >
-                  {/* HOT badge */}
-                  {product.hot === 1 && (
-                    <div className="absolute top-2 left-2 z-20">
-                      <div className="bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-r-full shadow badge-pulse">
-                        <i className="fas fa-fire text-[10px] mr-1"></i>
-                        HOT
+          {loading && <p>Đang tải sản phẩm...</p>}
+          {!loading && hotProducts.length === 0 && (
+            <p>Không có sản phẩm hot nào.</p>
+          )}
+          {!loading && hotProducts.length > 0 && (
+            <div className="relative">
+              <Swiper
+                modules={[Navigation]}
+                slidesPerView={5}
+                slidesPerGroup={2}
+                spaceBetween={20}
+                navigation={{
+                  nextEl: '.custom-swiper-button-next',
+                  prevEl: '.custom-swiper-button-prev',
+                }}
+                loop={hotProducts.length > 7 && hotProducts.length % 2 === 0} 
+                className="!pb-10"
+                breakpoints={{
+                  320: { slidesPerView: 2, slidesPerGroup: 2 },
+                  640: { slidesPerView: 2, slidesPerGroup: 2 },
+                  768: { slidesPerView: 3, slidesPerGroup: 2 },
+                  1024: { slidesPerView: 4, slidesPerGroup: 2 },
+                  1280: { slidesPerView: 5, slidesPerGroup: 2 },
+                }}
+              >
+                {hotProducts.map((product, index) => (
+                  <SwiperSlide key={product._id}>
+                    <motion.div
+                      variants={productFadeIn}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{ delay: index * 0.15, duration: 0.5, ease: "easeOut" }}
+                      className="relative border border-gray-300 rounded-lg p-3 bg-white shadow-md text-center font-sans z-10 h-full flex flex-col"
+                    >
+                      {/* HOT badge */}
+                      {product.hot === 1 && (
+                        <div className="absolute top-2 left-2 z-20">
+                          <div className="bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-r-full shadow badge-pulse">
+                            <i className="fas fa-fire text-[10px] mr-1"></i>
+                            HOT
+                          </div>
+                        </div>
+                      )}
+                      {/* Nút yêu thích */}
+                      <div
+                        className="absolute top-2 right-2 text-lg cursor-pointer z-20"
+                        onClick={() => toggleFavorite(product._id)}
+                      >
+                        <i
+                          className={`fas fa-heart ${
+                            isFavorite(product._id) ? "text-red-600" : "text-gray-300"
+                          } hover:text-red-600`}
+                        ></i>
                       </div>
-                    </div>
-                  )}
-
-                  {/* Nút yêu thích */}
-                  <div
-                    className="absolute top-2 right-2 text-lg cursor-pointer z-20"
-                    onClick={() => toggleFavorite(product._id)}
-                  >
-                    <i
-                      className={`fas fa-heart ${
-                        isFavorite(product._id) ? "text-red-600" : "text-gray-300"
-                      } hover:text-red-600`}
-                    ></i>
+                      {/* Hình ảnh */}
+                      <div className="w-full h-[140px] sm:h-[200px] flex items-center justify-center bg-white overflow-hidden">
+                        <img
+                          src={`${IMAGE_URL}/${product.images_main}`}
+                          alt={product.name}
+                          className="max-h-[120px] sm:max-h-[180px] object-contain transition-transform duration-300 ease-in-out hover:-rotate-12 hover:scale-105 active:-rotate-6"
+                        />
+                      </div>
+                      {/* Tên sản phẩm */}
+                      <div className="text-left text-[15px] sm:text-[16px] leading-snug font-medium text-gray-700 line-clamp-2 h-[4rem] sm:h-[3.5rem] mt-2">
+                        {product.name}
+                      </div>
+                      {/* Giá & trạng thái */}
+                      <div className="text-base text-gray-700 text-left mt-3 sm:mt-[20px] mb-3 sm:mb-[20px]">
+                        <span className="text-red-600 font-bold">{getDisplayPriceFromVariants(product)}</span>
+                        <span className="text-gray-600 ml-1">
+                          {product.status === "active" || product.status === "Hot"}
+                        </span>
+                      </div>
+                      {/* Nút hành động */}
+                      <div className="flex justify-between items-center gap-2 mt-auto">
+                        <button
+                          onClick={() => handleBuyNow(product._id)}
+                          className={`button ${isProductOutOfStock(product) ? "disabled" : ""}`}
+                          disabled={isProductOutOfStock(product)}
+                        >
+                          {isProductOutOfStock(product) ? "Hết hàng" : "Mua"}
+                        </button>
+                        <button
+                          onClick={() => handleAddToCart(product)}
+                          className={`flex-1 text-center px-3 py-2 text-xs sm:text-sm rounded-md flex items-center justify-center gap-1
+                            ${isProductOutOfStock(product)
+                              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                              : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
+                          disabled={isProductOutOfStock(product)}
+                        >
+                          <i className="fas fa-shopping-cart"></i>
+                          <span className="hidden sm:inline">
+                            {isProductOutOfStock(product) ? "Hết hàng" : "Thêm giỏ"}
+                          </span>
+                        </button>
+                      </div>
+                    </motion.div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+              {hotProducts.length > 5 && (
+                <>
+                  <div className="custom-swiper-button-prev absolute top-1/2 left-0 z-30 -translate-y-1/2 bg-green-700 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg cursor-pointer transition hover:bg-green-800">
+                    <i className="fa-solid fa-angle-left text-xl"></i>
                   </div>
-
-                  {/* Hình ảnh */}
-                  <div className="w-full h-[140px] sm:h-[200px] flex items-center justify-center bg-white overflow-hidden">
-                    <img
-                      src={`${IMAGE_URL}/${product.images_main}`}
-                      alt={product.name}
-                      className="max-h-[120px] sm:max-h-[180px] object-contain transition-transform duration-300 ease-in-out hover:-rotate-12 hover:scale-105 active:-rotate-6"
-                    />
+                  <div className="custom-swiper-button-next absolute top-1/2 right-0 z-30 -translate-y-1/2 bg-green-700 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg cursor-pointer transition hover:bg-green-800">
+                    <i className="fa-solid fa-angle-right text-xl"></i>
                   </div>
-
-                  {/* Tên sản phẩm */}
-                  <div className="text-left text-[15px] sm:text-[16px] leading-snug font-medium text-gray-700 line-clamp-2 h-[4rem] sm:h-[3.5rem] mt-2">
-                    {product.name}
-                  </div>
-
-                  {/* Giá & trạng thái */}
-                  <div className="text-base text-gray-700 text-left mt-3 sm:mt-[20px] mb-3 sm:mb-[20px]">
-                    <span className="text-red-600 font-bold">{getDisplayPriceFromVariants(product)}</span>
-                    <span className="text-gray-600 ml-1">
-                      {product.status === "active" || product.status === "Hot"}
-                    </span>
-                  </div>
-
-                  {/* Nút hành động */}
-                  <div className="flex justify-between items-center gap-2">
-                    <button
-                      onClick={() => handleBuyNow(product._id)}
-                      className={`button ${isProductOutOfStock(product) ? "disabled" : ""}`}
-                      disabled={isProductOutOfStock(product)}
-                    >
-                      {isProductOutOfStock(product) ? "Hết hàng" : "Mua"}
-                    </button>
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className={`flex-1 text-center px-3 py-2 text-xs sm:text-sm rounded-md flex items-center justify-center gap-1
-                        ${isProductOutOfStock(product)
-                          ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
-                      disabled={isProductOutOfStock(product)}
-                    >
-                      <i className="fas fa-shopping-cart"></i>
-                      <span className="hidden sm:inline">
-                        {isProductOutOfStock(product) ? "Hết hàng" : "Thêm giỏ"}
-                      </span>
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
-          </motion.div>
+                </>
+              )}
+            </div>
+          )}
           <div className="mt-6 flex justify-center">
             <button
               className="group border border-green-700 text-green-700 px-4 py-2 rounded-md text-sm sm:text-base hover:bg-green-700 hover:text-white transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center gap-1 justify-center w-[40%] sm:w-auto"
@@ -631,7 +658,7 @@ export default function HomePageSection() {
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
                     transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
-                    className="bg-white rounded-lg p-2.5 shadow-md flex flex-col justify-between h-full relative group"
+                    className="bg-white rounded-lg p-2.5 shadow-md flex flex-col justify-between h-full relative group border border-gray-300"
                   >
                     {/* Hot Icon */}
                     {product.hot === 1 && (
@@ -685,15 +712,16 @@ export default function HomePageSection() {
                       </button>
                       <button
                         onClick={() => handleAddToCart(product)}
-                        className={`flex-1 py-1.5 rounded-md text-xs flex items-center justify-center gap-1 ${
-                          isProductOutOfStock(product)
-                            ? "bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-300"
-                            : "bg-white border border-gray-300 hover:bg-gray-50"
-                        }`}
+                        className={`flex-1 text-center px-3 py-2 text-xs sm:text-sm rounded-md flex items-center justify-center gap-1
+                          ${isProductOutOfStock(product)
+                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
                         disabled={isProductOutOfStock(product)}
                       >
                         <i className="fas fa-shopping-cart"></i>
-                        {isProductOutOfStock(product) ? "Hết hàng" : "Thêm giỏ"}
+                        <span className="hidden sm:inline">
+                          {isProductOutOfStock(product) ? "Hết hàng" : "Thêm giỏ"}
+                        </span>
                       </button>
                     </div>
                   </motion.div>
@@ -754,7 +782,7 @@ export default function HomePageSection() {
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
                     transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
-                    className="bg-white rounded-lg p-2.5 shadow-md flex flex-col justify-between h-full relative group"
+                    className="bg-white rounded-lg p-2.5 shadow-md flex flex-col justify-between h-full relative group border border-gray-300"
                   >
                     {/* Hot Icon */}
                     {product.hot === 1 && (
@@ -802,15 +830,16 @@ export default function HomePageSection() {
                       </button>
                       <button
                         onClick={() => handleAddToCart(product)}
-                        className={`flex-1 py-1.5 rounded-md text-xs flex items-center justify-center gap-1 ${
-                          isProductOutOfStock(product)
-                            ? "bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-300"
-                            : "bg-white border border-gray-300 hover:bg-gray-50"
-                        }`}
+                        className={`flex-1 text-center px-3 py-2 text-xs sm:text-sm rounded-md flex items-center justify-center gap-1
+                          ${isProductOutOfStock(product)
+                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
                         disabled={isProductOutOfStock(product)}
                       >
                         <i className="fas fa-shopping-cart"></i>
-                        {isProductOutOfStock(product) ? "Hết hàng" : "Thêm giỏ"}
+                        <span className="hidden sm:inline">
+                          {isProductOutOfStock(product) ? "Hết hàng" : "Thêm giỏ"}
+                        </span>
                       </button>
                     </div>
                   </motion.div>
@@ -841,8 +870,7 @@ export default function HomePageSection() {
             </motion.div>
           </div>
         </div>
-
-      
+    
     {/* Nút Chatbot mới: Sử dụng component ChatbotButton */}
       <ChatbotButton setShowChat={setShowChat} />
 
