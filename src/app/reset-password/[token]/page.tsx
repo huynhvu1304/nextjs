@@ -49,7 +49,7 @@ export default function ResetPasswordPage() {
       
 
       toast.success(data.message)
-      setTimeout(() => router.push('/users'), 2000)
+      setTimeout(() => router.push('/'), 2000)
     } catch (err: any) {
       toast.error(err.message || 'Lỗi khi đặt lại mật khẩu')
     } finally {

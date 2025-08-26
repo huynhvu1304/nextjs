@@ -226,6 +226,7 @@ const Header = () => {
             </div>
 
           <div className="lg:hidden flex items-center gap-4">
+
             <button
               onClick={() => setMobileSearchVisible(prev => !prev)}
               className="text-2xl text-[#1a7a00]"
@@ -233,6 +234,44 @@ const Header = () => {
             >
               <i className="fas fa-search"></i>
             </button>
+            
+             <div className="flex gap-3 mt-1">
+  {/* Nút Vòng quay */}
+  {userName && (
+    <button
+      onClick={() => setShowSpinWheel(true)}
+      className="relative w-8 h-8 border border-[#1a7a00] rounded-full flex items-center justify-center text-[#1a7a00] text-base"
+      data-tooltip="Vòng quay may mắn"
+    >
+      <i className="fa-solid fa-gamepad"></i>
+    </button>
+  )}
+
+  {/* Favorite */}
+  <Link
+    href="/favorite"
+    onClick={() => setMobileMenuOpen(false)}
+    className="relative w-8 h-8 border border-[#1a7a00] rounded-full flex items-center justify-center text-base"
+  >
+    <i className="fas fa-heart text-[#1a7a00]"></i>
+    <span className="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[9px] h-4 min-w-[16px] px-1 rounded-full flex items-center justify-center">
+      {favoriteCount}
+    </span>
+  </Link>
+
+  {/* Cart */}
+  <Link
+    href="/cart"
+    onClick={() => setMobileMenuOpen(false)}
+    className="relative w-8 h-8 border border-[#1a7a00] rounded-full flex items-center justify-center text-base"
+  >
+    <i className="fas fa-shopping-cart text-[#1a7a00]"></i>
+    <span className="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[9px] h-4 min-w-[16px] px-1 rounded-full flex items-center justify-center">
+      {cartItemCount}
+    </span>
+  </Link>
+</div>
+
 
 
             <button
@@ -579,30 +618,7 @@ const Header = () => {
                   Giới thiệu
                 </Link>
 
-                <div className="flex gap-4 mt-4">
-                  {/* Nút Vòng quay */}
-                    {userName && (
-                          <button
-                            onClick={() => setShowSpinWheel(true)}
-                            className="relative w-10 h-10 border-2 border-[#1a7a00] rounded-full flex items-center justify-center text-[#1a7a00] text-xl tooltip"
-                            data-tooltip="Vòng quay may mắn"
-                          >
-                            <i className="fa-solid fa-gamepad"></i> {/* Icon vòng quay */}
-                          </button>
-                        )}
-                  <Link href="/favorite" onClick={() => setMobileMenuOpen(false)} className="relative w-10 h-10 border-2 border-[#1a7a00] rounded-full flex items-center justify-center text-xl">
-                    <i className="fas fa-heart text-[#1a7a00]"></i>
-                    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] h-5 min-w-[20px] px-1 rounded-full flex items-center justify-center">
-                      {favoriteCount}
-                    </span>
-                  </Link>
-                  <Link href="/cart" onClick={() => setMobileMenuOpen(false)} className="relative w-10 h-10 border-2 border-[#1a7a00] rounded-full flex items-center justify-center text-xl">
-                    <i className="fas fa-shopping-cart text-[#1a7a00]"></i>
-                    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] h-5 min-w-[20px] px-1 rounded-full flex items-center justify-center">
-                      {cartItemCount}
-                    </span>
-                  </Link>
-                </div>
+             
 
                 {userName ? (
                   <>

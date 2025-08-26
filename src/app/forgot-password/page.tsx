@@ -96,7 +96,7 @@ export default function ForgotPasswordPage() {
             'Gửi yêu cầu'
           )}
         </button>
-             </form>
+      </form>
      </div>
      <Footer />
         <ToastContainer

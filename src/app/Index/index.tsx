@@ -509,7 +509,11 @@ export default function HomePageSection() {
                       {/* Hình ảnh */}
                       <div className="w-full h-[140px] sm:h-[200px] flex items-center justify-center bg-white overflow-hidden">
                         <img
-                          src={`${IMAGE_URL}/${product.images_main}`}
+                          src={
+                            product.images_main
+                              ? `${IMAGE_URL}/${product.images_main}`
+                              : "./img/no-image.jpg"
+                          }
                           alt={product.name}
                           className="max-h-[120px] sm:max-h-[180px] object-contain transition-transform duration-300 ease-in-out hover:-rotate-12 hover:scale-105 active:-rotate-6"
                         />
@@ -529,17 +533,16 @@ export default function HomePageSection() {
                       <div className="flex justify-between items-center gap-2 mt-auto">
                         <button
                           onClick={() => handleBuyNow(product._id)}
-                          className={`button ${isProductOutOfStock(product) ? "disabled" : ""}`}
+                          className={`flex-1 py-2 px-2 text-xs sm:text-sm rounded-md border-2 border-green-700 bg-green-700 text-white whitespace-nowrap
+                            ${isProductOutOfStock(product) ? "bg-gray-100 text-gray-400 border-gray-300 cursor-not-allowed" : "hover:bg-green-800"}
+                            transition-all duration-200`}
                           disabled={isProductOutOfStock(product)}
                         >
                           {isProductOutOfStock(product) ? "Hết hàng" : "Mua"}
                         </button>
                         <button
                           onClick={() => handleAddToCart(product)}
-                          className={`flex-1 text-center px-3 py-2 text-xs sm:text-sm rounded-md flex items-center justify-center gap-1
-                            ${isProductOutOfStock(product)
-                              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                              : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
+                          className="w-full sm:w-1/2 py-2 bg-gray-100 border border-gray-300 rounded-md text-sm hover:bg-gray-200 transition-colors flex items-center justify-center gap-1"
                           disabled={isProductOutOfStock(product)}
                         >
                           <i className="fas fa-shopping-cart"></i>
@@ -554,10 +557,10 @@ export default function HomePageSection() {
               </Swiper>
               {hotProducts.length > 5 && (
                 <>
-                  <div className="custom-swiper-button-prev absolute top-1/2 left-0 z-30 -translate-y-1/2 bg-green-700 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg cursor-pointer transition hover:bg-green-800">
+                  <div className="custom-swiper-button-prev absolute top-1/2 sm:top-[45%] top-[40%] left-0 z-30 -translate-y-1/2 border-2 border-green-700 bg-white/30 backdrop-blur-md text-green-700 w-10 h-10 rounded-full flex items-center justify-center shadow-lg cursor-pointer transition hover:bg-green-50 hover:text-green-900">
                     <i className="fa-solid fa-angle-left text-xl"></i>
                   </div>
-                  <div className="custom-swiper-button-next absolute top-1/2 right-0 z-30 -translate-y-1/2 bg-green-700 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg cursor-pointer transition hover:bg-green-800">
+                  <div className="custom-swiper-button-next absolute top-1/2 sm:top-[45%] top-[40%] right-0 z-30 -translate-y-1/2 border-2 border-green-700 bg-white/30 backdrop-blur-md text-green-700 w-10 h-10 rounded-full flex items-center justify-center shadow-lg cursor-pointer transition hover:bg-green-50 hover:text-green-900">
                     <i className="fa-solid fa-angle-right text-xl"></i>
                   </div>
                 </>
@@ -662,15 +665,9 @@ export default function HomePageSection() {
                   >
                     {/* Hot Icon */}
                     {product.hot === 1 && (
-                      <div
-                        className="absolute top-2.5 left-2.5 bg-red-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-tl rounded-bl z-20"
-                        style={{
-                          clipPath:
-                            "polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%)",
-                        }}
-                      >
-                        <div className="flex items-center gap-1">
-                          <i className="fas fa-fire"></i>
+                      <div className="absolute top-2 left-2 z-20">
+                        <div className="bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-r-full shadow badge-pulse">
+                          <i className="fas fa-fire text-[10px] mr-1"></i>
                           HOT
                         </div>
                       </div>
@@ -687,35 +684,43 @@ export default function HomePageSection() {
                         } hover:text-red-600`}
                       ></i>
                     </div>
-                    <img
-                      src={
-                        product.images_main
-                          ? `${IMAGE_URL}/${product.images_main}`
-                          : "./img/no-image.jpg"
-                      }
-                      alt={product.name}
-                      className="w-full h-48 rounded-md object-contain transition-transform duration-300 ease-in-out hover:scale-105"
-                    />
-                    <h4 className="text-sm mt-2 mb-1">{product.name}</h4>
-                    <div className="text-red-600 font-bold">{getDisplayPriceFromVariants(product)}</div>
-                    <div className="flex gap-1.5">
+                    {/* Hình ảnh */}
+                    <div className="w-full h-[140px] sm:h-[200px] flex items-center justify-center bg-white overflow-hidden">
+                      <img
+                        src={
+                          product.images_main
+                            ? `${IMAGE_URL}/${product.images_main}`
+                            : "./img/no-image.jpg"
+                        }
+                        alt={product.name}
+                        className="max-h-[120px] sm:max-h-[180px] object-contain transition-transform duration-300 ease-in-out hover:-rotate-12 hover:scale-105 active:-rotate-6"
+                      />
+                    </div>
+                    {/* Tên sản phẩm */}
+                    <div className="text-left text-[15px] sm:text-[16px] leading-snug font-medium text-gray-700 line-clamp-2 h-[4rem] sm:h-[3.5rem] mt-2">
+                      {product.name}
+                    </div>
+                    {/* Giá & trạng thái */}
+                    <div className="text-base text-gray-700 text-left mt-3 sm:mt-[20px] mb-3 sm:mb-[20px]">
+                      <span className="text-red-600 font-bold">{getDisplayPriceFromVariants(product)}</span>
+                      <span className="text-gray-600 ml-1">
+                        {product.status === "active" || product.status === "Hot"}
+                      </span>
+                    </div>
+                    {/* Nút hành động */}
+                    <div className="flex justify-between items-center gap-2 mt-auto">
                       <button
                         onClick={() => handleBuyNow(product._id)}
-                        className={`flex-1 py-1.5 text-white rounded-md text-xs ${
-                          isProductOutOfStock(product)
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-green-700 hover:bg-green-800"
-                        }`}
+                        className={`flex-1 py-2 px-2 text-xs sm:text-sm rounded-md border-2 border-green-700 bg-green-700 text-white whitespace-nowrap
+                          ${isProductOutOfStock(product) ? "bg-gray-100 text-gray-400 border-gray-300 cursor-not-allowed" : "hover:bg-green-800"}
+                          transition-all duration-200`}
                         disabled={isProductOutOfStock(product)}
                       >
                         {isProductOutOfStock(product) ? "Hết hàng" : "Mua"}
                       </button>
                       <button
                         onClick={() => handleAddToCart(product)}
-                        className={`flex-1 text-center px-3 py-2 text-xs sm:text-sm rounded-md flex items-center justify-center gap-1
-                          ${isProductOutOfStock(product)
-                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
+                        className="w-full sm:w-1/2 py-2 bg-gray-100 border border-gray-300 rounded-md text-sm hover:bg-gray-200 transition-colors flex items-center justify-center gap-1"
                         disabled={isProductOutOfStock(product)}
                       >
                         <i className="fas fa-shopping-cart"></i>
@@ -805,35 +810,43 @@ export default function HomePageSection() {
                         } hover:text-red-600`}
                       ></i>
                     </div>
-                    <img
-                      src={
-                        product.images_main
-                          ? `${IMAGE_URL}/${product.images_main}`
-                          : "./img/no-image.jpg"
-                      }
-                      alt={product.name}
-                      className="w-full h-48 rounded-md object-contain"
-                    />
-                    <h4 className="text-sm mt-2 mb-1">{product.name}</h4>
-                    <div className="text-red-600 font-bold">{getDisplayPriceFromVariants(product)}</div>
-                    <div className="flex gap-1.5">
+                    {/* Hình ảnh */}
+                    <div className="w-full h-[140px] sm:h-[200px] flex items-center justify-center bg-white overflow-hidden">
+                      <img
+                        src={
+                          product.images_main
+                            ? `${IMAGE_URL}/${product.images_main}`
+                            : "./img/no-image.jpg"
+                        }
+                        alt={product.name}
+                        className="max-h-[120px] sm:max-h-[180px] object-contain transition-transform duration-300 ease-in-out hover:-rotate-12 hover:scale-105 active:-rotate-6"
+                      />
+                    </div>
+                    {/* Tên sản phẩm */}
+                    <div className="text-left text-[15px] sm:text-[16px] leading-snug font-medium text-gray-700 line-clamp-2 h-[4rem] sm:h-[3.5rem] mt-2">
+                      {product.name}
+                    </div>
+                    {/* Giá & trạng thái */}
+                    <div className="text-base text-gray-700 text-left mt-3 sm:mt-[20px] mb-3 sm:mb-[20px]">
+                      <span className="text-red-600 font-bold">{getDisplayPriceFromVariants(product)}</span>
+                      <span className="text-gray-600 ml-1">
+                        {product.status === "active" || product.status === "Hot"}
+                      </span>
+                    </div>
+                    {/* Nút hành động */}
+                    <div className="flex justify-between items-center gap-2 mt-auto">
                       <button
                         onClick={() => handleBuyNow(product._id)}
-                        className={`flex-1 py-1.5 text-white rounded-md text-xs ${
-                          isProductOutOfStock(product)
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-green-700 hover:bg-green-800"
-                        }`}
+                        className={`flex-1 py-2 px-2 text-xs sm:text-sm rounded-md border-2 border-green-700 bg-green-700 text-white whitespace-nowrap
+                          ${isProductOutOfStock(product) ? "bg-gray-100 text-gray-400 border-gray-300 cursor-not-allowed" : "hover:bg-green-800"}
+                          transition-all duration-200`}
                         disabled={isProductOutOfStock(product)}
                       >
                         {isProductOutOfStock(product) ? "Hết hàng" : "Mua"}
                       </button>
                       <button
                         onClick={() => handleAddToCart(product)}
-                        className={`flex-1 text-center px-3 py-2 text-xs sm:text-sm rounded-md flex items-center justify-center gap-1
-                          ${isProductOutOfStock(product)
-                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
+                        className="w-full sm:w-1/2 py-2 bg-gray-100 border border-gray-300 rounded-md text-sm hover:bg-gray-200 transition-colors flex items-center justify-center gap-1"
                         disabled={isProductOutOfStock(product)}
                       >
                         <i className="fas fa-shopping-cart"></i>

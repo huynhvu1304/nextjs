@@ -253,6 +253,20 @@
   margin-right: 30px;
 }
 
+@media (max-width: 480px) {
+  .discount-text.no-prize-text {
+    white-space: normal;
+    margin-bottom: 35px;
+    margin-right: 15px;
+    font-size: 0.8rem;
+    /* Hiển thị 1 dòng */
+    display: block;
+  }
+  .discount-text.no-prize-text br {
+    display: none;
+  }
+}
+
 .remaining-count {
   font-size: 0.7rem;
   font-weight: 500;
@@ -629,5 +643,8 @@
     font-size: 1.3rem;
   }
   
-
+  .spin-button {
+    font-size: 1rem;
+    padding: 12px 30px;
+  }
 }

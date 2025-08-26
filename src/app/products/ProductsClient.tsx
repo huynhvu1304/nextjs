@@ -101,6 +101,8 @@ export default function ProductsClient() {
 
   const [sortOption, setSortOption] = useState("newest");
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 20;
 
   // Đọc tham số hot từ URL và cập nhật filters.hot
   useEffect(() => {
@@ -269,7 +271,7 @@ export default function ProductsClient() {
     return filters;
   };
 
-  // Cập nhật hàm lọc sản phẩm
+  // Đặt hàm getFilteredProducts lên trên
   const getFilteredProducts = (products: Product[]) => {
     let filtered = products.filter(product => product.status !== "inactive");
 
@@ -311,6 +313,10 @@ export default function ProductsClient() {
 
     return getSortedProducts(filtered);
   };
+
+  const filteredProducts = getFilteredProducts(products);
+  const totalPages = Math.ceil(filteredProducts.length / pageSize);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   const handleBuyNow = (productId: string) => {
     router.push(`/detail/${productId}`);
@@ -578,29 +584,25 @@ export default function ProductsClient() {
               </select>
             </div>
             
-            <div className="overflow-y-auto flex-1" style={{ maxHeight: 'calc(100vh - 8rem)' }}>
+            <div>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-auto-fit gap-4">
                 {loading ? (
                   <div className="col-span-full text-center py-10">Đang tải sản phẩm...</div>
-                ) : getFilteredProducts(products).length === 0 ? (
+                ) : paginatedProducts.length === 0 ? (
                   <div className="col-span-full flex flex-col items-center py-10 text-gray-500">
                     <i className="fas fa-search mb-2 text-2xl"></i>
                     <p>Không có sản phẩm mà bạn tìm</p>
                   </div>
                 ) : (
-                  getFilteredProducts(products).slice(0, 60).map((product) => (
+                  paginatedProducts.map((product) => (
                     <div
                       key={product._id}
-                      className="bg-white rounded-lg p-2.5 shadow-md flex flex-col justify-between h-full relative group"
+                      className="bg-white rounded-lg p-2.5 shadow-md flex flex-col justify-between h-full relative group border border-gray-200"
                     >
                       {product.hot === 1 && (
-                        <div className="absolute top-2.5 left-2.5 bg-red-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-tl rounded-bl z-20"
-                          style={{
-                            clipPath: "polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%)",
-                          }}
-                        >
-                          <div className="flex items-center gap-1">
-                            <i className="fas fa-fire"></i>
+                        <div className="absolute top-2 left-2 z-20">
+                          <div className="bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-r-full shadow badge-pulse">
+                            <i className="fas fa-fire text-[10px] mr-1"></i>
                             HOT
                           </div>
                         </div>
@@ -661,6 +663,23 @@ export default function ProductsClient() {
                   ))
                 )}
               </div>
+            </div>
+            <div className="flex justify-center items-center gap-2 mt-6">
+              <button
+                className="px-3 py-1 rounded border bg-gray-100 hover:bg-gray-200"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(currentPage - 1)}
+              >
+                Trước
+              </button>
+              <span>Trang {currentPage} / {totalPages}</span>
+              <button
+                className="px-3 py-1 rounded border bg-gray-100 hover:bg-gray-200"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(currentPage + 1)}
+              >
+                Sau
+              </button>
             </div>
           </div>
         </div>
