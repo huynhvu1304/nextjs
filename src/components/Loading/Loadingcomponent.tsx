@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const Loading = ({ duration = 4000, onDone }: { duration?: number; onDone?: () => void }) => {
+const Loading = ({ duration = 2000, onDone }: { duration?: number; onDone?: () => void }) => {
   const [show, setShow] = useState(true);
 
   useEffect(() => {

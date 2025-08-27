@@ -37,7 +37,21 @@ type UserAddress = {
   createdAt: string;
   updatedAt?: string;
 };
+// Define types for address data
+type Province = {
+  name: string;
+  code: number;
+};
 
+type District = {
+  name: string;
+  code: number;
+};
+
+type Ward = {
+  name: string;
+  code: number;
+};
 type PaymentMethod = "cod" | "bank_transfer" | "vnpay";
 
 export default function CartPage() {
@@ -71,7 +85,15 @@ export default function CartPage() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [selectedVoucher, setSelectedVoucher] = useState<UserVoucher  | null>(null);
   const [voucherDiscount, setVoucherDiscount] = useState<number>(0);
+// *** BỔ SUNG STATE MỚI CHO ĐỊA CHỈ ***
+const [provinces, setProvinces] = useState<Province[]>([]);
+const [districts, setDistricts] = useState<District[]>([]);
+const [wards, setWards] = useState<Ward[]>([]);
 
+const [selectedProvince, setSelectedProvince] = useState("");
+const [selectedDistrict, setSelectedDistrict] = useState("");
+const [selectedWard, setSelectedWard] = useState("");
+const [manualInput, setManualInput] = useState(""); // Dùng cho số nhà, tên đường
   const totalPrice = totalAmount;
   const finalPrice = totalPrice - voucherDiscount;
     useEffect(() => {
@@ -268,6 +290,23 @@ export default function CartPage() {
       newErrors.address = "Địa chỉ chi tiết quá ngắn.";
     }
 
+// *** LOGIC KIỂM TRA ĐỊA CHỈ MỚI ***
+// Chỉ kiểm tra khi người dùng chưa chọn địa chỉ đã lưu
+if (!customer.selectedAddressId) {
+  // Yêu cầu bắt buộc phải chọn đầy đủ 3 cấp hành chính
+  if (!selectedProvince) {
+    newErrors.address = "Vui lòng chọn Tỉnh/Thành phố.";
+  } else if (!selectedDistrict) {
+    newErrors.address = "Vui lòng chọn Quận/Huyện.";
+  } else if (!selectedWard) {
+    newErrors.address = "Vui lòng chọn Phường/Xã.";
+  }
+  // // Yêu cầu nhập số nhà/tên đường
+  // if (!manualInput.trim()) {
+  //   // Có thể tùy chỉnh lỗi này
+  //   newErrors.address = newErrors.address || "Vui lòng nhập số nhà, tên đường.";
+  // }
+}
     setErrors(newErrors);
     setErrorMessage(null);
 
@@ -416,6 +455,35 @@ export default function CartPage() {
   useEffect(() => {
     setPageLoading(true);
   }, []);
+useEffect(() => {
+  const fetchProvinces = async () => {
+    try {
+      const res = await fetch("https://provinces.open-api.vn/api/?depth=1");
+      const data = await res.json();
+      setProvinces(data);
+    } catch (error) {
+      console.error("Lỗi khi tải danh sách tỉnh/thành phố:", error);
+    }
+  };
+  fetchProvinces();
+}, []);
+useEffect(() => {
+  // Tìm tên của tỉnh, huyện, xã đã chọn
+  // Ép kiểu các mảng về `any[]` để truy cập thuộc tính `code` và `name`
+  const provinceName = (provinces as any[]).find(p => p.code === parseInt(selectedProvince))?.name || "";
+  const districtName = (districts as any[]).find(d => d.code === parseInt(selectedDistrict))?.name || "";
+  const wardName = (wards as any[]).find(w => w.code === parseInt(selectedWard))?.name || "";
+  
+  // Nối các phần lại, chỉ lấy những phần có giá trị
+  const addressParts = [manualInput, wardName, districtName, provinceName].filter(part => part);
+  const fullAddress = addressParts.join(", ");
+
+  // Cập nhật state customer.address
+  setCustomer(prev => ({
+    ...prev,
+    address: fullAddress,
+  }));
+}, [manualInput, selectedWard, selectedDistrict, selectedProvince, provinces, districts, wards]);
 
   if (pageLoading)
     return <Loading duration={2000} onDone={() => setPageLoading(false)} />;
@@ -751,96 +819,172 @@ export default function CartPage() {
                   )}
                 </div>
 
-                {/* Địa chỉ nhận hàng */}
-                <div>
-                  <label
-                    htmlFor="address"
-                    className="block mb-2 font-semibold text-gray-700"
-                  >
-                    Địa chỉ nhận hàng
-                  </label>
-                  {isAddressLoading ? (
-                    <p className="text-gray-500 italic">Đang tải địa chỉ...</p>
-                  ) : (
-                    <>
-                      {/* Display selected/default address */}
-                      {customer.selectedAddressId ? (
-                        <div className="p-4 border rounded-md bg-green-50 flex justify-between items-start mb-3">
-                          <div>
-                            <p className="font-semibold text-gray-800">
-                              {customer.name} ({customer.phone})
-                            </p>
-                            <p className="text-gray-700 text-sm">
-                              {customer.address}
-                            </p>
-                            {/* Nhãn "Mặc định" chỉ hiển thị nếu địa chỉ này khớp với defaultUserAddress */}
-                            {defaultUserAddress &&
-                              customer.selectedAddressId ===
-                                defaultUserAddress._id && (
-                                <span className="mt-2 inline-block px-3 py-1 bg-green-600 text-white text-xs font-bold rounded-full shadow-sm">
-                                  Mặc định
-                                </span>
-                              )}
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => setIsAddressModalOpen(true)}
-                            className="text-green-600 hover:underline font-medium text-sm ml-4 flex-shrink-0"
-                          >
-                            Thay đổi
-                          </button>
-                        </div>
-                      ) : (
-                        // If no address selected (meaning user might want to input new, or has no saved addresses)
-                      <div className="text-center py-4 border rounded-md bg-gray-50 mb-3">
-                          <p className="text-gray-500 italic mb-2">
-                            Bạn chưa chọn địa chỉ nào từ danh sách đã lưu.
-                          </p>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (!isAuthenticated) {
-                                toast.info("Bạn cần đăng nhập để chọn địa chỉ đã lưu.");
-                                return;
-                              }
-                              setIsAddressModalOpen(true);
-                            }}
-                            className="text-green-600 hover:underline font-medium"
-                          >
-                            Chọn từ địa chỉ đã lưu
-                          </button>
-                        </div>
-                      )}
+             {/* Địa chỉ nhận hàng */}
+<div>
+  <label
+    htmlFor="address"
+    className="block mb-2 font-semibold text-gray-700"
+  >
+    Địa chỉ nhận hàng
+  </label>
+  {isAddressLoading ? (
+    <p className="text-gray-500 italic">Đang tải địa chỉ...</p>
+  ) : (
+    <>
+      {/* Hiển thị địa chỉ đã chọn/mặc định */}
+      {customer.selectedAddressId ? (
+        <div className="p-4 border rounded-md bg-green-50 flex justify-between items-start mb-3">
+          <div>
+            <p className="font-semibold text-gray-800">
+              {customer.name} ({customer.phone})
+            </p>
+            <p className="text-gray-700 text-sm">
+              {customer.address}
+            </p>
+            {/* Nhãn "Mặc định" chỉ hiển thị nếu địa chỉ này khớp với defaultUserAddress */}
+            {defaultUserAddress &&
+              customer.selectedAddressId ===
+                defaultUserAddress._id && (
+                <span className="mt-2 inline-block px-3 py-1 bg-green-600 text-white text-xs font-bold rounded-full shadow-sm">
+                  Mặc định
+                </span>
+              )}
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsAddressModalOpen(true)}
+            className="text-green-600 hover:underline font-medium text-sm ml-4 flex-shrink-0"
+          >
+            Thay đổi
+          </button>
+        </div>
+      ) : (
+        // Nếu chưa có địa chỉ nào được chọn (tức là cần nhập mới)
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            {/* Select Tỉnh/Thành phố */}
+            <div>
+              <label htmlFor="province" className="block text-sm font-medium text-gray-600 mb-1">Tỉnh/Thành phố</label>
+              <select
+                id="province"
+                value={selectedProvince}
+                onChange={async (e) => {
+                  const code = e.target.value;
+                  setSelectedProvince(code);
+                  setSelectedDistrict("");
+                  setSelectedWard("");
+                  if (code) {
+                    const res = await fetch(`https://provinces.open-api.vn/api/p/${code}?depth=2`);
+                    const data = await res.json();
+                    setDistricts(data.districts);
+                  } else {
+                    setDistricts([]);
+                    setWards([]);
+                  }
+                }}
+                className={`w-full border rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 transition ${errors.address ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-green-500"}`}
+                required
+              >
+                <option value="">Chọn Tỉnh/Thành phố</option>
+                {provinces.map((p: any) => (
+                  <option key={p.code} value={p.code}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-                  {customer.selectedAddressId ? null : (
-                      <textarea
-                        id="address"
-                        name="address"
-                        value={customer.address}
-                        onChange={handleCustomerChange}
-                        disabled={!!customer.selectedAddressId}
-                        className={`w-full border rounded-md px-4 py-3 mt-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 transition resize-none ${
-                          errors.address
-                            ? "border-red-500 focus:ring-red-500"
-                            : "border-gray-300 focus:ring-green-500"
-                        } ${
-                          !!customer.selectedAddressId
-                            ? "bg-gray-100 cursor-not-allowed"
-                            : ""
-                        }`}
-                        placeholder="Hoặc nhập địa chỉ nhận hàng chi tiết (số nhà, tên đường, phường/xã, tỉnh/thành phố)"
-                        rows={3}
-                        required={!customer.selectedAddressId}
-                      />
-                              )}
-                      {errors.address && (
-                        <p className="mt-1 text-red-600 text-sm">
-                          {errors.address}
-                        </p>
-                      )}
-                    </>
-                  )}
-                </div>
+            {/* Select Quận/Huyện */}
+            <div>
+              <label htmlFor="district" className="block text-sm font-medium text-gray-600 mb-1">Quận/Huyện</label>
+              <select
+                id="district"
+                value={selectedDistrict}
+                onChange={async (e) => {
+                  const code = e.target.value;
+                  setSelectedDistrict(code);
+                  setSelectedWard("");
+                  if (code) {
+                    const res = await fetch(`https://provinces.open-api.vn/api/d/${code}?depth=2`);
+                    const data = await res.json();
+                    setWards(data.wards);
+                  } else {
+                    setWards([]);
+                  }
+                }}
+                className={`w-full border rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 transition ${errors.address ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-green-500"}`}
+                disabled={!selectedProvince}
+                required
+              >
+                <option value="">Chọn Quận/Huyện</option>
+                {districts.map((d: any) => (
+                  <option key={d.code} value={d.code}>
+                    {d.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Select Phường/Xã */}
+            <div>
+              <label htmlFor="ward" className="block text-sm font-medium text-gray-600 mb-1">Phường/Xã</label>
+              <select
+                id="ward"
+                value={selectedWard}
+                onChange={(e) => setSelectedWard(e.target.value)}
+                className={`w-full border rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 transition ${errors.address ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-green-500"}`}
+                disabled={!selectedDistrict}
+                required
+              >
+                <option value="">Chọn Phường/Xã</option>
+                {wards.map((w: any) => (
+                  <option key={w.code} value={w.code}>
+                    {w.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          
+          {/* Textarea để nhập số nhà, tên đường */}
+          <textarea
+            id="manualAddress"
+            name="manualAddress"
+            value={manualInput}
+            onChange={(e) => setManualInput(e.target.value)}
+            className={`w-full border rounded-md px-4 py-3 mt-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 transition resize-none ${errors.address ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-green-500"}`}
+            placeholder="Ví dụ: Số 123, đường ABC, hẻm 1665..."
+            rows={2}
+          />
+
+          <div className="text-center py-4 border rounded-md bg-gray-50 mt-3">
+              <p className="text-gray-500 italic mb-2">
+                Hoặc chọn từ danh sách đã lưu.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  if (!isAuthenticated) {
+                    toast.info("Bạn cần đăng nhập để chọn địa chỉ đã lưu.");
+                    return;
+                  }
+                  setIsAddressModalOpen(true);
+                }}
+                className="text-green-600 hover:underline font-medium"
+              >
+                Chọn từ địa chỉ đã lưu
+              </button>
+            </div>
+        </>
+      )}
+      {errors.address && (
+        <p className="mt-1 text-red-600 text-sm">
+          {errors.address}
+        </p>
+      )}
+    </>
+  )}
+</div>
               </div>
             </div>
 

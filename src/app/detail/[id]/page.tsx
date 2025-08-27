@@ -178,25 +178,51 @@ const Detail = () => {
 }, []);
   // Sử dụng useEffect để tải dữ liệu sản phẩm khi productId thay đổi
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        if (!productId) return;
-        const res = await fetch(`${API_URL}/products/${productId}`);
-        if (!res.ok) throw new Error("Product not found");
-        const data = await res.json();
-        setProduct(data);
-        // Tự động chọn màu sắc và kích thước mặc định khi sản phẩm thay đổi
-        if (data.variants?.length) {
+  const fetchProduct = async () => {
+    try {
+      if (!productId) return;
+      const res = await fetch(`${API_URL}/products/${productId}`);
+      if (!res.ok) throw new Error("Product not found");
+      const data = await res.json();
+      setProduct(data);
+
+      // Tự động chọn variant đang flash sale nếu có
+      if (data.variants?.length) {
+        // Lấy danh sách flash sale đang diễn ra
+        const flashRes = await fetch(`${API_URL}/flashsales`);
+        const flashSales = flashRes.ok ? await flashRes.json() : [];
+        const activeFlashes = flashSales.filter((fs: any) => fs.status === 'Đang diễn ra');
+
+        // Tìm variant đầu tiên đang flash sale
+        let flashVariant = null;
+        for (const variant of data.variants) {
+          const isInFlashSale = activeFlashes.some((fs: any) =>
+            fs.products.some((p: any) =>
+              String(p.product_id?._id) === String(data._id) &&
+              String(p.variant_id) === String(variant._id) &&
+              p.quantity > 0
+            )
+          );
+          if (isInFlashSale) {
+            flashVariant = variant;
+            break;
+          }
+        }
+        if (flashVariant) {
+          setSelectedColor(flashVariant.color);
+          setSelectedSize(flashVariant.size);
+        } else {
           setSelectedColor(data.variants[0].color);
           setSelectedSize(data.variants[0].size);
         }
-      } catch (error) {
-        console.error("Failed to load product", error);
       }
-    };
+    } catch (error) {
+      console.error("Failed to load product", error);
+    }
+  };
 
-    fetchProduct();
-  }, [productId]);
+  fetchProduct();
+}, [productId]);
 
 
   // Kiểm tra sản phẩm có trong danh sách yêu thích khi productId thay đổi

@@ -7,6 +7,7 @@ import { FaBoxOpen, FaSearch, FaSort, FaFilter, FaCalendarAlt, FaMoneyBillWave, 
 import { toast } from "react-toastify"; 
 import Swal from "sweetalert2"; 
 import { useRouter } from "next/navigation";
+import ReviewForm from "@/components/ReviewForm"; 
 
 
 interface Order {
@@ -28,7 +29,7 @@ interface Order {
     description?: string;
   } | null;
   items: {
-    productId: string | null;
+    productId: string;
     productName: string;
     variant: {
       size: string;
@@ -90,6 +91,13 @@ const OrdersPage = () => {
   // State cho loading
   const [loading, setLoading] = useState(false);
 
+  // State cho modal đánh giá
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewProduct, setReviewProduct] = useState<any>(null);
+
+  // State cho sản phẩm đã được đánh giá
+  const [reviewedProducts, setReviewedProducts] = useState<string[]>([]);
+
   // Gán isClient = true sau khi component render phía client
   useEffect(() => {
     setIsClient(true);
@@ -121,6 +129,35 @@ const OrdersPage = () => {
 
     fetchOrders();
   }, []);
+
+  // Lấy danh sách sản phẩm đã được đánh giá
+  const [userComments, setUserComments] = useState<{ [productId: string]: any }>({});
+  useEffect(() => {
+    const fetchUserComments = async () => {
+      const token = localStorage.getItem("token");
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const userId = user.id || user._id;
+      const res = await fetch(`${API_URL}/comments/by-user?user_id=${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      const commentsMap: { [productId: string]: any } = {};
+      data.forEach((c: any) => {
+        const pid = c.product_id?._id ? c.product_id._id.toString() : c.product_id?.toString?.() || c.product_id;
+        if (pid && !c.isDeleted) commentsMap[pid] = c;
+      });
+      setUserComments(commentsMap);
+      console.log("userComments keys:", Object.keys(commentsMap));
+      if (orders.length > 0) {
+        orders.forEach(order => {
+          order.items.forEach(item => {
+            console.log("Order item productId:", item.productId);
+          });
+        });
+      }
+    };
+    fetchUserComments();
+  }, [orders]);
 
   // Toggle mở rộng / thu gọn đơn hàng
   const toggleExpand = (orderId: string) => {
@@ -693,7 +730,12 @@ const OrdersPage = () => {
                                     className="w-14 h-14 sm:w-20 sm:h-20 rounded-xl object-contain border shadow"
                                   />
                                   <div className="flex-1">
-                                    <h3 className="text-sm sm:text-base font-semibold text-[#0A9300]">{item.productName}</h3>
+                                    <h3
+                                      className="text-sm sm:text-base font-semibold text-[#0A9300] cursor-pointer hover:underline"
+                                      onClick={() => handleViewProductDetail(item.productId)}
+                                    >
+                                      {item.productName}
+                                    </h3>
                                     <div className="text-xs sm:text-sm text-gray-500 mt-1">
                                       Size: <span className="font-medium">{item.variant.size}</span> | Màu: <span className="font-medium">{item.variant.color}</span>
                                     </div>
@@ -706,16 +748,30 @@ const OrdersPage = () => {
                                       {item.price.toLocaleString("vi-VN")} ₫
                                     </div>
                                     {/* Đơn đã giao: hiện cả Đánh giá và Mua lại */}
-                                    {order.status === "delivered" && item.productId && (
+                                    {order.status === "delivered" && typeof item.productId === "string" && (
                                       <div className="mt-2 flex gap-2">
+                                        {(reviewedProducts.includes(item.productId) || userComments[item.productId]) ? (
+                                          <button disabled className="text-xs sm:text-sm bg-gray-300 text-gray-500 border-2 border-gray-300 px-3 py-1 rounded font-semibold cursor-not-allowed">
+                                            Đã đánh giá
+                                          </button>
+                                        ) : (
+                                          <button
+                                            onClick={() => {
+                                              setReviewProduct({
+                                                productId: item.productId,
+                                                productName: item.productName,
+                                                price: item.price,
+                                                image: item.variant.image,
+                                              });
+                                              setShowReviewModal(true);
+                                            }}
+                                            className="text-xs sm:text-sm bg-white text-green-600 border-2 border-green-600 px-3 py-1 rounded font-semibold"
+                                          >
+                                            Đánh giá
+                                          </button>
+                                        )}
                                         <button
-                                          onClick={() => handleViewProductDetail(item.productId!)}
-                                          className="text-xs sm:text-sm bg-white text-green-600 border-2 border-green-600 px-3 py-1 rounded font-semibold"
-                                        >
-                                          Đánh giá
-                                        </button>
-                                        <button
-                                          onClick={() => handleRepurchase(item.productId!)}
+                                          onClick={() => handleRepurchase(item.productId)}
                                           className="text-xs sm:text-sm bg-[#0A9300] text-white border-2 border-[#0A9300] px-3 py-1 rounded font-semibold"
                                         >
                                           Mua lại
@@ -827,6 +883,38 @@ const OrdersPage = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal đánh giá sản phẩm */}
+      {showReviewModal && reviewProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-[90vw] max-w-md relative mt-2 sm:mt-4 md:mt-[40px]">
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-black"
+              onClick={() => setShowReviewModal(false)}
+              aria-label="Đóng"
+            >
+              <i className="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h2 className="text-lg font-bold mb-4 text-[#0A9300]">Đánh giá nhanh sản phẩm</h2>
+            <div className="flex gap-3 items-center mb-4">
+              <img src={`${IMAGE_URL}/${reviewProduct.image}`} alt={reviewProduct.productName} className="w-16 h-16 rounded object-contain border" />
+              <div>
+                <div className="font-semibold text-[#0A9300]">{reviewProduct.productName}</div>
+                <div className="text-red-600 font-bold">{reviewProduct.price.toLocaleString("vi-VN")} ₫</div>
+              </div>
+            </div>
+              <ReviewForm
+                productId={reviewProduct.productId}
+                onSuccess={(productId: string) => {
+                  setShowReviewModal(false);
+                  toast.success("Đánh giá thành công!");
+                  setReviewedProducts(prev => [...prev, productId]);
+                }}
+                onError={(msg: string) => toast.error(msg)}
+              />
           </div>
         </div>
       )}
