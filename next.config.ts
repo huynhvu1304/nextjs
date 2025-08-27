@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
       'via.placeholder.com',
       'localhost',
        'backend.novashop.io.vn',
+       "lh3.googleusercontent.com",
     ],
   },
   eslint: {
