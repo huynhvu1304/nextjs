@@ -1226,7 +1226,7 @@ useEffect(() => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {/* Option to manually enter new address */}
+              {allUserAddresses.length < 3 && (
                   <div
                     className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 
                                         ${
@@ -1258,7 +1258,7 @@ useEffect(() => {
                       Điền thông tin địa chỉ thủ công.
                     </p>
                   </div>
-
+              )}
                   {/* List of saved addresses */}
                   {allUserAddresses.map((address) => (
                     <div
