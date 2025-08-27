@@ -11,7 +11,9 @@ const roboto = Roboto({
 });
 
 export const metadata = {
-  title: 'NOVASHOP'
+   title: 'NOVASHOP - Vợt & Giày Cầu Lông Chính Hãng',
+  description: 'Chuyên vợt cầu lông và giày cầu lông chính hãng, giá tốt.',
+  keywords: ['vợt cầu lông', 'giày cầu lông', 'NovaShop','vợt kumpoo','vợt yonex','vợt lining','giày yonex','giày kumpoo','giày lining'],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
