@@ -567,7 +567,8 @@ const Detail = () => {
       setEditingComment(null);
       setEditContent("");
       setEditRating(0);
-      window.location.reload();
+      // window.location.reload();
+       toast.success("Đã cập nhật đánh giá!");
     } catch (error: any) {
       console.error("Lỗi cập nhật:", error);
       toast.error(error.message || "Cập nhật bình luận thất bại");
@@ -1526,7 +1527,40 @@ const getFlashSaleQuantity = () => {
                       />
                       <span className="font-semibold">{c.user_id?.name || "Người dùng"}</span>
                     </div>
-                    {/* ...các nút sửa/xóa... */}
+                    {/* Chỉnh sửa điều kiện hiển thị các nút */}
+                    {(isCommentOwner || isAdmin) && (
+                      <div className="flex gap-2">
+                        {isCommentOwner && (
+                          <>
+                            <button
+                              onClick={() => {
+                                setEditingComment(c._id);
+                                setEditContent(c.content);
+                                setEditRating(c.rating); // Add this line
+                              }}
+                              className="text-blue-600 hover:text-blue-800"
+                            >
+                              <i className="fas fa-edit"></i>
+                            </button>
+                            {/* <button
+                              onClick={() => handleDeleteComment(c._id)}
+                              className="text-red-600 hover:text-red-800"
+                              disabled={isDeleting}
+                            >
+                              <i className="fas fa-trash"></i>
+                            </button> */}
+                          </>
+                        )}
+                        {isAdmin && !c.admin_reply && (
+                          <button
+                            onClick={() => setReplyingId(c._id)}
+                            className="text-green-600 hover:text-green-800"
+                          >
+                            <i className="fas fa-reply"></i>
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-yellow-500 text-xl">

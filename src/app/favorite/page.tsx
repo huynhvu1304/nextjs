@@ -113,6 +113,8 @@ function Favorites() {
   });
 
   const [flashSalePriceMap, setFlashSalePriceMap] = useState<Map<string, { sale_price: number; original_price: number }>>(new Map());
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9; // Số sản phẩm mỗi trang
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -212,7 +214,15 @@ function Favorites() {
         throw new Error(errorData.message || 'Lỗi khi xóa yêu thích');
       }
 
-      setFavorites(prev => prev.filter(p => p._id !== productId));
+      setFavorites(prev => {
+        const updated = prev.filter(p => p._id !== productId);
+        // Kiểm tra số trang mới
+        const newTotalPages = Math.max(1, Math.ceil(updated.length / itemsPerPage));
+        if (currentPage > newTotalPages) {
+          setCurrentPage(newTotalPages);
+        }
+        return updated;
+      });
       toast.success("Đã xóa khỏi danh sách yêu thích");
       window.dispatchEvent(new Event("favoriteChanged"));
     } catch (err: any) {
@@ -329,7 +339,18 @@ function Favorites() {
     return filtered;
   };
 
+  // Phân trang sản phẩm đã lọc
   const filteredFavorites = getFilteredFavorites();
+  const totalPages = Math.ceil(filteredFavorites.length / itemsPerPage);
+  const paginatedFavorites = filteredFavorites.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // Khi filter/search thay đổi thì về trang 1
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filters]);
 
   // Lấy thông tin flashsale cho các sản phẩm yêu thích
   useEffect(() => {
@@ -529,15 +550,15 @@ function Favorites() {
                 Sản phẩm yêu thích ({filteredFavorites.length})
               </h2>
             </div>
-            <div className="overflow-y-auto flex-1" style={{ maxHeight: 'calc(100vh - 8rem)' }}>
+            <div className="flex-1">
               <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 w-full justify-items-center mb-10">
-                {filteredFavorites.length === 0 ? (
+                {paginatedFavorites.length === 0 ? (
                   <div className="col-span-full flex flex-col items-center py-10 text-gray-500">
                     <i className="fas fa-heart-broken mb-2 text-2xl"></i>
                     <p>Chưa có sản phẩm yêu thích nào.</p>
                   </div>
                 ) : (
-                  filteredFavorites.map(product => (
+                  paginatedFavorites.map(product => (
                     <div
                       key={product._id}
                       className="w-full max-w-[180px] xs:max-w-[200px] sm:max-w-[230px] md:max-w-[250px] flex flex-col items-center border rounded-lg p-2 sm:p-4 bg-white shadow relative"
@@ -597,6 +618,34 @@ function Favorites() {
                   ))
                 )}
               </div>
+              {/* Pagination controls */}
+              {filteredFavorites.length > 0 && (
+                <div className="flex justify-center items-center gap-2 mb-4">
+                  <button
+                    className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                  >
+                    Trước
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                      key={i + 1}
+                      className={`px-3 py-1 rounded ${currentPage === i + 1 ? 'bg-green-600 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                      onClick={() => setCurrentPage(i + 1)}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                  <button
+                    className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                  >
+                    Sau
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
