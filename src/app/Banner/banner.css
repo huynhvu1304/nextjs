@@ -20,20 +20,11 @@
   transform: scale(0.95);
 }
 
-/* Hiệu ứng hover cho logo thương hiệu */
-.brand-logo:hover {
-  transform: scale(1.1) translateY(-5px);
-}
-
 /* Hiệu ứng nhấn cho logo thương hiệu */
 .brand-logo {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.brand-logo:hover {
-  transform: translateY(-8px); 
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
-}
 
 .slider-img {
   transition-property: opacity, transform;

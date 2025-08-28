@@ -496,226 +496,196 @@ useEffect(() => {
         </h1>
 
         {/* Bảng sản phẩm trong giỏ hàng */}
-        <section className="bg-white rounded-xl shadow-md p-2 sm:p-6 mb-8 sm:mb-14 overflow-x-auto">
-          <h2 className="text-lg sm:text-2xl font-semibold mb-4 sm:mb-5 border-b border-gray-300 pb-2 sm:pb-3 text-gray-800">
-            Sản phẩm trong giỏ hàng
-          </h2>
+<section className="bg-white rounded-xl shadow-md p-4 sm:p-6 mb-8 sm:mb-14">
+  <h2 className="text-xl sm:text-2xl font-semibold mb-4 border-b border-gray-300 pb-2 text-gray-800">
+    Sản phẩm trong giỏ hàng
+  </h2>
 
-          {cartItems.length === 0 ? (
-            <p className="text-center text-gray-500 py-16 sm:py-24 text-base sm:text-lg italic">
-              Giỏ hàng đang trống.
-            </p>
-          ) : (
-            <>
-              {/* Bảng cho màn hình lớn (sm và lớn hơn) - Giữ nguyên */}
-              <div className="hidden sm:block w-full overflow-x-auto">
-                <table className="w-full table-auto border-collapse text-gray-800 text-xs sm:text-base">
-                  <thead>
-                    <tr className="border-b border-gray-300 bg-gray-100">
-                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">
-                        Ảnh
-                      </th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">
-                        Tên sản phẩm
-                      </th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-right">
-                        Giá
-                      </th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-center">
-                        Số lượng
-                      </th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-right">
-                        Thành tiền
-                      </th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-center">
-                        Hành động
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {cartItems.map((item) => {
-                      const priceToUse =
-                        item.variantDetails.cost_sale > 0
-                          ? item.variantDetails.cost_sale
-                          : item.variantDetails.cost_price;
+  {cartItems.length === 0 ? (
+    <p className="text-center text-gray-500 py-16 text-base italic">
+      Giỏ hàng đang trống.
+    </p>
+  ) : (
+    <>
+      {/* Bảng cho màn hình lớn (sm và lớn hơn) */}
+      <div className="hidden sm:block w-full overflow-x-auto">
+        <table className="w-full table-auto border-collapse text-gray-800 text-sm md:text-base">
+          <thead>
+            <tr className="border-b border-gray-300 bg-gray-100">
+              <th className="py-2 px-3 text-left w-1/12">Ảnh</th>
+              <th className="py-2 px-3 text-left w-5/12">Tên sản phẩm</th>
+              <th className="py-2 px-3 text-right w-1/12">Giá</th>
+              <th className="py-2 px-3 text-center w-2/12">Số lượng</th>
+              <th className="py-2 px-3 text-right w-2/12">Thành tiền</th>
+              <th className="py-2 px-3 text-center w-1/12">Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cartItems.map((item) => {
+              const priceToUse =
+                item.variantDetails.cost_sale > 0
+                  ? item.variantDetails.cost_sale
+                  : item.variantDetails.cost_price;
 
-                      return (
-                        <tr
-                          key={item._id}
-                          className="border-b border-gray-200 hover:bg-gray-50 transition"
-                        >
-                          <td className="py-1 sm:py-2 px-2 sm:px-3">
-                            <img
-                              src={`${API_URL}/images/${item.variantDetails.image}`}
-                              alt={item.productName}
-                              className="w-12 h-12 sm:w-16 sm:h-16 object-contain rounded-lg"
-                              loading="lazy"
-                            />
-                          </td>
-                          <td className="py-1 sm:py-2 px-2 sm:px-3 font-medium text-xs sm:text-base">
-                            {item.productName} ({item.variantDetails.size} -{" "}
-                            {item.variantDetails.color})
-                          </td>
-                          <td className="py-1 sm:py-2 px-2 sm:px-3 text-right text-xs sm:text-base font-medium text-gray-700">
-                            {priceToUse.toLocaleString()} VND
-                          </td>
-                          <td className="py-1 sm:py-2 px-2 sm:px-3 text-center">
-                            <div className="inline-flex items-center border rounded-md overflow-hidden select-none bg-gray-100 border-gray-300">
-                              <button
-                                onClick={() =>
-                                  handleUpdateQuantity(
-                                    item._id,
-                                    item.quantity - 1
-                                  )
-                                }
-                                className="px-2 py-1 bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition"
-                              >
-                                −
-                              </button>
-                              <input
-                                type="number"
-                                min={1}
-                                className="w-8 sm:w-10 text-center border-l border-r border-gray-300 py-1 bg-white focus:outline-none"
-                                value={item.quantity}
-                                onChange={(e) =>
-                                  handleUpdateQuantity(
-                                    item._id,
-                                    Math.max(1, +e.target.value)
-                                  )
-                                }
-                              />
-                              <button
-                                onClick={() =>
-                                  handleUpdateQuantity(
-                                    item._id,
-                                    item.quantity + 1
-                                  )
-                                }
-                                className="px-2 py-1 bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition"
-                              >
-                                +
-                              </button>
-                            </div>
-                          </td>
-                          <td className="py-1 sm:py-2 px-2 sm:px-3 text-right font-semibold text-xs sm:text-lg text-red-600">
-                            {(priceToUse * item.quantity).toLocaleString()} VND
-                          </td>
-                          <td className="py-1 sm:py-2 px-2 sm:px-3 text-center">
-                            <button
-                              onClick={() => handleRemoveItem(item._id)}
-                              className="text-red-500 hover:text-red-700 transition text-xs sm:text-base"
-                            >
-                              <TrashIcon className="h-6 w-6" />
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Layout dạng Card cho màn hình nhỏ (dưới sm) - Đã tinh chỉnh */}
-              <div className="sm:hidden">
-                {cartItems.map((item) => {
-                  const priceToUse =
-                    item.variantDetails.cost_sale > 0
-                      ? item.variantDetails.cost_sale
-                      : item.variantDetails.cost_price;
-
-                  return (
-                    <div
-                      key={item._id}
-                      className="flex items-center border-b border-gray-200 py-3 last:border-b-0"
-                    >
-                      {/* Ảnh sản phẩm và Tên/Size/Màu */}
-                      <div className="flex-shrink-0 mr-3">
-                        <img
-                          src={`${API_URL}/images/${item.variantDetails.image}`}
-                          alt={item.productName}
-                          className="w-24 h-24 object-contain rounded-lg shadow-sm"
-                          loading="lazy"
-                        />
-                      </div>
-
-                      <div className="flex-grow">
-                        <p className="font-semibold text-base text-gray-800 leading-tight line-clamp-2">
-                          {item.productName}
-                        </p>
-                        <p className="text-sm text-gray-600 mt-0.5">
-                          {item.variantDetails.size} -{" "}
-                          {item.variantDetails.color}
-                        </p>
-                        <p className="text-sm text-gray-700 mt-2">
-                          Giá:{" "}
-                          <span className="font-medium">
-                            {priceToUse.toLocaleString()} VND
-                          </span>
-                        </p>
-
-                        {/* Khu vực điều chỉnh số lượng và Thành tiền */}
-                        <div className="flex items-center justify-between mt-3">
-                          {/* Điều khiển số lượng */}
-                          <div className="inline-flex items-center border rounded-md overflow-hidden select-none bg-gray-100 border-gray-300">
-                            <button
-                              onClick={() =>
-                                handleUpdateQuantity(
-                                  item._id,
-                                  item.quantity - 1
-                                )
-                              }
-                              className="px-2.5 py-1 bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition text-base"
-                            >
-                              −
-                            </button>
-                            <input
-                              type="number"
-                              min={1}
-                              className="w-10 text-center border-l border-r border-gray-300 py-1 bg-white focus:outline-none text-base font-medium"
-                              value={item.quantity}
-                              onChange={(e) =>
-                                handleUpdateQuantity(
-                                  item._id,
-                                  Math.max(1, +e.target.value)
-                                )
-                              }
-                            />
-                            <button
-                              onClick={() =>
-                                handleUpdateQuantity(
-                                  item._id,
-                                  item.quantity + 1
-                                )
-                              }
-                              className="px-2.5 py-1 bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition text-base"
-                            >
-                              +
-                            </button>
-                          </div>
-                          {/* Thành tiền */}
-                          <p className="font-bold text-lg text-red-600 ml-3">
-                            {(priceToUse * item.quantity).toLocaleString()} VND
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Nút Xóa (đặt riêng biệt ở bên phải cùng) */}
-                      <div className="flex-shrink-0 ml-3 self-center">
-                        <button
-                          onClick={() => handleRemoveItem(item._id)}
-                          className="text-gray-400 hover:text-red-500 transition"
-                        >
-                          {/* Icon thùng rác của Heroicons, kích thước phù hợp với mobile */}
-                          <TrashIcon className="h-6 w-6" />
-                        </button>
-                      </div>
+              return (
+                <tr
+                  key={item._id}
+                  className="border-b border-gray-200 hover:bg-gray-50 transition"
+                >
+                  <td className="py-2 px-3">
+                    <img
+                      src={`${API_URL}/images/${item.variantDetails.image}`}
+                      alt={item.productName}
+                      className="w-16 h-16 object-contain rounded-lg"
+                      loading="lazy"
+                    />
+                  </td>
+                  <td className="py-2 px-3 font-medium">
+                    {item.productName} ({item.variantDetails.size} -{" "}
+                    {item.variantDetails.color})
+                  </td>
+                  <td className="py-2 px-3 text-right font-medium text-gray-700">
+                    {priceToUse.toLocaleString()} VND
+                  </td>
+                  <td className="py-2 px-3 text-center">
+                    <div className="inline-flex items-center border rounded-md overflow-hidden select-none bg-gray-100 border-gray-300">
+                      <button
+                        onClick={() =>
+                          handleUpdateQuantity(item._id, item.quantity - 1)
+                        }
+                        className="px-2 py-1 bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition"
+                      >
+                        −
+                      </button>
+                      <input
+                        type="number"
+                        min={1}
+                        className="w-10 text-center border-l border-r border-gray-300 py-1 bg-white focus:outline-none"
+                        value={item.quantity}
+                        onChange={(e) =>
+                          handleUpdateQuantity(
+                            item._id,
+                            Math.max(1, +e.target.value)
+                          )
+                        }
+                      />
+                      <button
+                        onClick={() =>
+                          handleUpdateQuantity(item._id, item.quantity + 1)
+                        }
+                        className="px-2 py-1 bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition"
+                      >
+                        +
+                      </button>
                     </div>
-                  );
-                })}
+                  </td>
+                  <td className="py-2 px-3 text-right font-semibold text-lg text-red-600">
+                    {(priceToUse * item.quantity).toLocaleString()} VND
+                  </td>
+                  <td className="py-2 px-3 text-center">
+                    <button
+                      onClick={() => handleRemoveItem(item._id)}
+                      className="text-red-500 hover:text-red-700 transition"
+                    >
+                      <TrashIcon className="h-6 w-6" />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Layout dạng Card cho màn hình nhỏ (dưới sm) */}
+      <div className="sm:hidden space-y-4">
+        {cartItems.map((item) => {
+          const priceToUse =
+            item.variantDetails.cost_sale > 0
+              ? item.variantDetails.cost_sale
+              : item.variantDetails.cost_price;
+
+          return (
+            <div
+              key={item._id}
+              className="flex items-start border-b border-gray-200 pb-4 last:border-b-0 last:pb-0"
+            >
+              <div className="flex-shrink-0 mr-4">
+                <img
+                  src={`${API_URL}/images/${item.variantDetails.image}`}
+                  alt={item.productName}
+                  className="w-20 h-20 object-contain rounded-lg shadow-sm"
+                  loading="lazy"
+                />
               </div>
-            </>
-          )}
-        </section>
+
+              <div className="flex-grow">
+                <div className="flex justify-between items-start">
+                  <p className="font-semibold text-sm text-gray-800 leading-tight line-clamp-2 pr-2">
+                    {item.productName}
+                  </p>
+                  <button
+                    onClick={() => handleRemoveItem(item._id)}
+                    className="text-gray-400 hover:text-red-500 transition flex-shrink-0"
+                  >
+                    <TrashIcon className="h-5 w-5" />
+                  </button>
+                </div>
+
+                <p className="text-sm text-gray-600 mt-1">
+                  Size: {item.variantDetails.size} | Màu:{" "}
+                  {item.variantDetails.color}
+                </p>
+                <p className="text-sm text-gray-700 mt-2">
+                  Giá:{" "}
+                  <span className="font-medium">
+                    {priceToUse.toLocaleString()} VND
+                  </span>
+                </p>
+
+                <div className="flex items-center justify-between mt-3">
+                  <div className="inline-flex items-center border rounded-md overflow-hidden select-none bg-gray-100 border-gray-300">
+                    <button
+                      onClick={() =>
+                        handleUpdateQuantity(item._id, item.quantity - 1)
+                      }
+                      className="px-2 py-1 bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition text-sm"
+                    >
+                      −
+                    </button>
+                    <input
+                      type="number"
+                      min={1}
+                      className="w-10 text-center border-l border-r border-gray-300 py-1 bg-white focus:outline-none text-sm font-medium"
+                      value={item.quantity}
+                      onChange={(e) =>
+                        handleUpdateQuantity(
+                          item._id,
+                          Math.max(1, +e.target.value)
+                        )
+                      }
+                    />
+                    <button
+                      onClick={() =>
+                        handleUpdateQuantity(item._id, item.quantity + 1)
+                      }
+                      className="px-2 py-1 bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition text-sm"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <p className="font-bold text-base text-red-600">
+                    {(priceToUse * item.quantity).toLocaleString()} VND
+                  </p>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  )}
+</section>
 
         {/* Thanh toán và Đơn hàng */}
         <section className="bg-white rounded-xl shadow-md p-3 sm:p-8 flex flex-col md:flex-row gap-6 sm:gap-12 lg:gap-16">

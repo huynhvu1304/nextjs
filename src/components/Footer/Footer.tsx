@@ -1,5 +1,5 @@
-// components/Footer.jsx
 import Link from "next/link";
+import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -10,7 +10,7 @@ const Footer = () => {
           
           {/* Cột 1: Logo / Thanh toán */}
           <div>
-            <h4 className="text-xl font-semibold mb-5 border-b border-gray-700 pb-3">Cửa hàng</h4>
+            <h3 className="text-xl font-semibold mb-5 border-b border-gray-700 pb-3">Cửa hàng</h3>
             <img
               src="/img/logo.png"
               alt="Logo"
@@ -23,25 +23,28 @@ const Footer = () => {
             <h3 className="text-2xl font-bold mb-4 flex items-center gap-3 border-b border-gray-700 pb-2">
               <i className="fas fa-store text-blue-500"></i> Novashop
             </h3>
-            <p className="text-gray-300 text-sm leading-relaxed mb-4">
-              Cung cấp giày thể thao chính hãng với giá tốt. Giao hàng toàn quốc.
+            <p className="text-gray-100 text-sm select-none">
+              © 2025 NovaShop. All rights reserved.
+            </p>
+            <p className="text-gray-100 text-sm leading-relaxed mb-4">
+              Cửa hàng Novashop Cung cấp giày thể thao chính hãng với giá tốt. Giao hàng toàn quốc.
             </p>
             <div className="flex gap-4">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 text-xl transition-colors">
-                <i className="fab fa-facebook-f"></i>
+              <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 text-xl transition-colors">
+                <FaFacebook />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-pink-500 text-xl transition-colors">
-                <i className="fab fa-instagram"></i>
+              <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer" className="hover:text-pink-500 text-xl transition-colors">
+                <FaInstagram />
               </a>
-              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-300 text-xl transition-colors">
-                <i className="fab fa-tiktok"></i>
+              <a href="https://tiktok.com" aria-label="TikTok" target="_blank" rel="noopener noreferrer" className="hover:text-gray-300 text-xl transition-colors">
+                <FaTiktok />
               </a>
             </div>
           </div>
 
           {/* Cột 3: Liên hệ */}
           <div>
-            <h4 className="text-xl font-semibold mb-5 border-b border-gray-700 pb-3">Liên hệ</h4>
+            <h3 className="text-xl font-semibold mb-5 border-b border-gray-700 pb-3">Liên hệ</h3>
             <p className="flex items-center gap-3 mb-3 text-gray-400 hover:text-white transition">
               <i className="fas fa-map-marker-alt text-blue-500"></i>
               Ấp Bàu Bông xã Phước An, huyện Nhơn Trạch, Đồng Nai
@@ -58,7 +61,7 @@ const Footer = () => {
 
           {/* Cột 4: Hỗ trợ */}
           <div>
-            <h4 className="text-xl font-semibold mb-5 border-b border-gray-700 pb-3">Hỗ trợ khách hàng</h4>
+            <h3 className="text-xl font-semibold mb-5 border-b border-gray-700 pb-3">Hỗ trợ khách hàng</h3>
             <ul className="space-y-3 text-sm">
               <li><a href="/about" className="text-gray-400 hover:text-white transition">Chính sách bảo hành</a></li>
               <li><a href="/about" className="text-gray-400 hover:text-white transition">Chính sách đổi trả</a></li>
@@ -71,7 +74,7 @@ const Footer = () => {
         <div className="border-t border-gray-700 pt-8 mb-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             <div>
-              <h4 className="text-xl font-semibold mb-5">Chứng nhận</h4>
+              <h3 className="text-xl font-semibold mb-5">Chứng nhận</h3>
               <div className="flex gap-6 flex-wrap">
                 <img src="/img/DMCA_1.png" alt="Chứng nhận DMCA" className="h-12 object-contain" />
                 <img src="/img/logoSaleNoti.png" alt="Chứng nhận Sale Noti" className="h-12 object-contain" />
@@ -82,7 +85,7 @@ const Footer = () => {
 
         {/* Footer Bottom */}
         <div className="border-t border-gray-700 pt-6 text-center">
-          <p className="text-gray-500 text-sm select-none">
+          <p className="text-gray-100 text-sm select-none">
             © 2025 NovaShop. All rights reserved.
           </p>
         </div>

@@ -546,6 +546,9 @@ export default function HomePageSection() {
                           disabled={isProductOutOfStock(product)}
                         >
                           <i className="fas fa-shopping-cart"></i>
+                          <span className="sr-only">
+                            {isProductOutOfStock(product) ? "Hết hàng" : "Thêm vào giỏ hàng"}
+                          </span>
                           <span className="hidden sm:inline">
                             {isProductOutOfStock(product) ? "Hết hàng" : "Thêm giỏ"}
                           </span>
@@ -584,7 +587,7 @@ export default function HomePageSection() {
             <Link href="/products">
               <motion.img
                 src="img/banner-sale.png"
-                alt="Banner Sale"
+                alt="Banner khuyến mãi cầu lông"
                 className="w-full rounded-lg shadow-md"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -613,7 +616,7 @@ export default function HomePageSection() {
               <div className="absolute inset-0 bg-black bg-opacity-30 z-0"></div>
               <img
                 src="img/banner_cate.jpg"
-                alt="Cầu lông player"
+                alt="Banner vợt cầu lông"
                 className="w-full h-full object-cover transition-transform duration-400 group-hover:scale-105 group-hover:opacity-90"
               />
               <Link
@@ -724,6 +727,9 @@ export default function HomePageSection() {
                         disabled={isProductOutOfStock(product)}
                       >
                         <i className="fas fa-shopping-cart"></i>
+                        <span className="sr-only">
+                          {isProductOutOfStock(product) ? "Hết hàng" : "Thêm vào giỏ hàng"}
+                        </span>
                         <span className="hidden sm:inline">
                           {isProductOutOfStock(product) ? "Hết hàng" : "Thêm giỏ"}
                         </span>
@@ -740,7 +746,7 @@ export default function HomePageSection() {
         <div className="container-custom md:mt-[80px]">
           <img
             src="img/banner_small_21.png"
-            alt=""
+            alt="Banner nhỏ cầu lông"
             className="w-full max-w-[1400px] rounded-lg"
           />
         </div>
@@ -850,6 +856,9 @@ export default function HomePageSection() {
                         disabled={isProductOutOfStock(product)}
                       >
                         <i className="fas fa-shopping-cart"></i>
+                        <span className="sr-only">
+                          {isProductOutOfStock(product) ? "Hết hàng" : "Thêm vào giỏ hàng"}
+                        </span>
                         <span className="hidden sm:inline">
                           {isProductOutOfStock(product) ? "Hết hàng" : "Thêm giỏ"}
                         </span>
@@ -871,7 +880,7 @@ export default function HomePageSection() {
               <div className="absolute inset-0 bg-black bg-opacity-30 z-0"></div>
               <img
                 src="img/banner_cate_2.png"
-                alt="Giày thể thao player"
+                alt="Banner giày thể thao"
                 className="w-full h-full object-cover transition-transform duration-400 group-hover:scale-105 group-hover:opacity-90"
               />
               <Link

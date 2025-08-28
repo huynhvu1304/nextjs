@@ -13,11 +13,12 @@ import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
 import { API_URL } from "@/lib/api";
 import Image from "next/image";
+
 const Banner = () => {
   const images = [
-    "/img/banner_main_5.png",
-    "/img/banner_main_6.png",
-    "/img/banner_main_4.jpg",
+    { src: "/img/banner_main_5.png", alt: "Banner Vợt cầu lông chính hãng" },
+    { src: "/img/banner_main_6.png", alt: "Banner Giày cầu lông chất lượng" },
+    { src: "/img/banner_main_4.png", alt: "Banner Cửa hàng cầu lông uy tín" },
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -30,7 +31,6 @@ const Banner = () => {
     return () => clearInterval(interval);
   }, [images.length]);
 
-  // Lấy danh sách brands img
   useEffect(() => {
     const fetchData = async () => {
       const data = await getBrands();
@@ -39,7 +39,6 @@ const Banner = () => {
     fetchData();
   }, []);
 
-  // Hiệu ứng chuyển động cho từng phần
   const slideVariants = {
     hidden: { x: -100, opacity: 0 },
     visible: { x: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" as const } },
@@ -57,13 +56,12 @@ const Banner = () => {
     visible: { x: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" as const } },
   };
 
-
   return (
-    <div className="w-full overflow-hidden mt-0 md:mt-[20px] pb-0 md:pb-[40px]"> 
+    <header className="w-full overflow-hidden mt-0 md:mt-[20px] pb-0 md:pb-[40px]" aria-label="Hero Section">
       <div className="w-full container-custom mt-0 md:mt-[50px] mx-auto p-6 flex flex-col md:flex-row items-center justify-between">
-        {/* Box trái - Hiển thị trên desktop, ẩn trên mobile */}
-        <motion.div
-          className="w-full md:w-[55%] hidden md:block" 
+        {/* Left Box - Desktop only */}
+        <motion.section
+          className="w-full md:w-[55%] hidden md:block"
           variants={slideVariants}
           initial="hidden"
           whileInView="visible"
@@ -77,103 +75,119 @@ const Banner = () => {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <span className="text-green-600">Vợt cầu lông uy tín</span> – Cửa hàng cầu lông chính hãng, giá tốt
+            Vợt & Giày Cầu Lông Chính Hãng
           </motion.h1>
-          <motion.p
-            className="text-base text-gray-700 my-6"
+          <motion.h2
+            className="text-xl text-gray-700 my-4 font-semibold"
             custom={1}
             variants={textVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
           >
-            Chuyên cung cấp vợt cầu lông, giày cầu lông chính hãng từ các thương hiệu nổi tiếng. Cam kết chất lượng, giao hàng toàn quốc, giá cạnh tranh.
-          </motion.p>
-          <motion.div
-            className="flex space-x-4 my-6"
+            NovaShop phân phối vợt và giày Yonex, Lining, Kumpoo chính hãng
+          </motion.h2>
+          <motion.p
+            className="text-base text-gray-700 my-2"
             custom={2}
             variants={textVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <Link href="/signup">
+            Cam kết chất lượng – Giao hàng toàn quốc – Giá cạnh tranh.
+          </motion.p>
+          <motion.div
+            className="flex space-x-4 my-6"
+            custom={3}
+            variants={textVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <Link href="/signup" aria-label="Đăng ký tài khoản">
               <motion.button
-                className="bg-green-600 text-white px-4 py-2 rounded inline-flex items-center gap-2 transition-all duration-300 shadow-md signup-button"
+                className="bg-green-600 text-white px-6 py-3 rounded inline-flex items-center gap-2 transition-all duration-300 shadow-md signup-button"
               >
                 Đăng ký <FaArrowRight />
               </motion.button>
             </Link>
-            <Link href="/about">
+            <Link href="/about" aria-label="Giới thiệu cửa hàng">
               <motion.button
-                className="border border-green-500 bg-white text-green-500 px-4 py-2 rounded inline-flex items-center gap-2 transition-all duration-300 hover:bg-green-600 hover:text-white"
+                className="border border-green-500 bg-white text-green-500 px-6 py-3 rounded inline-flex items-center gap-2 transition-all duration-300 hover:bg-green-600 hover:text-white"
               >
                 Giới thiệu <FaLocationArrow />
               </motion.button>
             </Link>
           </motion.div>
 
-          <div className="my-10">
-            <Swiper
-              modules={[Autoplay]}
-              spaceBetween={24}
-              slidesPerView={3}
-              slidesPerGroup={1}
-              autoplay={{
-                delay: 2000,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true,
-              }}
-              loop={true}
-              grabCursor={true}
-              className="px-4"
-            >
-              {brands.map((brand) => (
-                <SwiperSlide key={brand.id || brand.name}>
-                  <img
+          <div className="my-10" aria-label="Thương hiệu nổi bật">
+          <Swiper
+            modules={[Autoplay]}
+            spaceBetween={24}
+            slidesPerView={3}
+            slidesPerGroup={1}
+            autoplay={{
+              delay: 2000,
+              disableOnInteraction: false,
+            }}
+            loop={true}
+            grabCursor={true}
+            className="px-4"
+          >
+            {brands.map((brand) => (
+              <SwiperSlide key={brand.id || brand.name}>
+                <div className="bg-white border border-gray-300 rounded shadow-md flex items-center justify-center py-2">
+                  <Image
                     src={`${API_URL}/images/${brand.image_logo}`}
-                    alt={brand.name}
-                    className="w-48 h-24 object-contain shadow-md brand-logo rounded bg-green-200 mx-auto"
+                    alt={`Logo thương hiệu ${brand.name}`}
+                    width={192}
+                    height={96}
+                    className="w-48 h-24 object-contain brand-logo mx-auto"
                   />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        </motion.div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+        </motion.section>
 
-        {/* Khoảng trống - Giữ nguyên cho desktop */}
+        {/* Spacer */}
         <div className="hidden md:block md:w-[5%]" />
 
-        {/* Box phải (ảnh) - Banner và Caption trên Mobile */}
-        <motion.div
-          className="w-full md:w-[40%] mt-0 md:mt-0 relative h-[220px] sm:h-[280px] md:h-[300px] lg:h-[360px]"
+        {/* Right Box (Banner & Caption) */}
+        <motion.section
+          className="w-full md:w-[40%] mt-0 md:mt-0 relative h-[220px] sm:h-[280px] md:h-[300px] lg:h-[350px]"
           variants={rightVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
           <div className="relative w-full h-full overflow-hidden md:rounded-tl-[40%] md:rounded-tr-[8px] md:rounded-br-[8px] md:rounded-bl-[8px] shadow-lg">
-            {images.map((src, index) => (
-              <img
+            {images.map((img, index) => (
+              <Image
                 key={index}
-                src={src}
-                alt={`Slide ${index + 1}`}
+                src={img.src}
+                alt={img.alt}
+                fill
+                sizes="(max-width: 768px) 100vw, 40vw"
                 className="absolute w-full h-full object-cover object-center transition-all duration-1000 ease-[cubic-bezier(0.4, 0, 0.2, 1)]"
                 style={{
                   opacity: index === currentSlide ? 1 : 0,
                   transform: index === currentSlide ? 'translateX(0)' : index > currentSlide ? 'translateX(100%)' : 'translateX(-100%)',
                   zIndex: index === currentSlide ? 10 : 0,
                 }}
+                priority={index === 0}
+                {...(index === 0 ? { fetchPriority: "high" } : {})}
               />
             ))}
             <div className="absolute inset-0 bg-black bg-opacity-30 z-[15]" />
 
-            {/* Caption (Text) trên Banner - Chỉ hiển thị trên mobile */}
+            {/* Caption (Text) trên Banner - Mobile only */}
             <div className="absolute inset-0 z-20 flex flex-col justify-center items-center text-center p-4 md:hidden">
               <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 leading-tight">
                 <span className="text-green-300">Vợt, giày cầu lông</span> – Cửa hàng uy tín
               </h1>
-              {/* Mô tả ngắn hơn cho các kích thước mobile khác nhau */}
               <p className="text-sm text-gray-100 hidden sm:block leading-snug">
                 Chuyên cung cấp vợt, giày cầu lông chính hãng, giá tốt.
               </p>
@@ -181,14 +195,14 @@ const Banner = () => {
                 Vợt, giày chính hãng.
               </p>
               <div className="flex space-x-2 mt-4">
-                <Link href="/signup">
+                <Link href="/signup" aria-label="Đăng ký tài khoản">
                   <motion.button
                     className="bg-green-600 text-white px-3 py-1 text-sm rounded inline-flex items-center gap-1 transition-all duration-300 shadow-md signup-button"
                   >
                     Đăng ký <FaArrowRight size={12} />
                   </motion.button>
                 </Link>
-                <Link href="/about">
+                <Link href="/about" aria-label="Giới thiệu cửa hàng">
                   <motion.button
                     className="border border-green-500 bg-white text-green-500 px-3 py-1 text-sm rounded inline-flex items-center gap-1 transition-all duration-300 hover:bg-green-600 hover:text-white"
                   >
@@ -198,9 +212,9 @@ const Banner = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </motion.section>
       </div>
-    </div>
+    </header>
   );
 };
 
