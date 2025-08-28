@@ -160,77 +160,95 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ isOpen, onClose }) => {
     });
   };
 
-  const handleSpin = async () => {
-    if (!eligibility?.canSpin) return;
-    if (wheelItems.length === 0) return toast.info('Chưa có voucher để quay');
-    if (isSpinning) return;
+    const handleSpin = async () => {
+      if (!eligibility?.canSpin) return;
+      if (wheelItems.length === 0) return toast.info('Chưa có voucher để quay');
+      if (isSpinning) return;
 
-    try {
-      setIsSpinning(true);
-      setShowResult(false);
-      const result = await SpinWheelService.spinWheel();
-      pendingResultRef.current = result;
+      try {
+        setIsSpinning(true);
+        setShowResult(false);
+        const result = await SpinWheelService.spinWheel();
+        pendingResultRef.current = result;
 
-     
-      let targetIndex = 0;
-      const targetCode = result.voucher?.code ?? 'NO_PRIZE';
-      const idx = wheelItems.findIndex((v) => v.code === targetCode);
-      targetIndex = idx >= 0 ? idx : 0;
-
-      const centerAngle = targetIndex * anglePerSegment + anglePerSegment / 2;
-      const normalizedPrev = ((rotation % 360) + 360) % 360;
-     
-      const jitter = Math.max(5, anglePerSegment * 0.2);
-      const offset = (Math.random() - 0.5) * Math.min(jitter, anglePerSegment * 0.8);
-     
-      const pointerAngle = 350;
-      const desiredAtPointer = (360 - ((centerAngle - pointerAngle) + offset) + 360) % 360;
-      let deltaToFinal = desiredAtPointer - normalizedPrev;
-      if (deltaToFinal < 0) deltaToFinal += 360;
-      const fullSpins = 6 * 360;
-      const finalRotation = rotation + fullSpins + deltaToFinal;
-
-      const onTransitionEnd = () => {
       
-        if (wheelRef.current) {
-          wheelRef.current.removeEventListener('transitionend', onTransitionEnd);
-        }
+        let targetIndex = 0;
+        const targetCode = result.voucher?.code ?? 'NO_PRIZE';
+        const idx = wheelItems.findIndex((v) => v.code === targetCode);
+        targetIndex = idx >= 0 ? idx : 0;
+
+        const centerAngle = targetIndex * anglePerSegment + anglePerSegment / 2;
+        const normalizedPrev = ((rotation % 360) + 360) % 360;
+      
+        const jitter = Math.max(5, anglePerSegment * 0.2);
+        const offset = (Math.random() - 0.5) * Math.min(jitter, anglePerSegment * 0.8);
+      
+        const pointerAngle = 350;
+        const desiredAtPointer = (360 - ((centerAngle - pointerAngle) + offset) + 360) % 360;
+        let deltaToFinal = desiredAtPointer - normalizedPrev;
+        if (deltaToFinal < 0) deltaToFinal += 360;
+        const fullSpins = 6 * 360;
+        const finalRotation = rotation + fullSpins + deltaToFinal;
+
+        const onTransitionEnd = () => {
+        
+          if (wheelRef.current) {
+            wheelRef.current.removeEventListener('transitionend', onTransitionEnd);
+          }
+          setIsSpinning(false);
+          const r = pendingResultRef.current;
+          setSpinResult(r || null);
+          setShowResult(true);
+        
+          if (r?.voucher) {
+            setWheelItems((items) =>
+              items.map((it) =>
+                it.code === r.voucher.code ? { ...it, remaining: r.voucher.remaining } : it
+              )
+            );
+          }
+        
+          (async () => {
+            try {
+              const elig = await SpinWheelService.checkEligibility();
+              setEligibility(elig);
+              setCountdown(elig.canSpin ? null : (elig.remainingTime ?? null));
+            } catch {}
+          })();
+        };
+// Dừng sát trước ô trúng, rồi mới dừng hẳn để người dùng nhìn rõ
+const FAST_DUR_MS = 3200;   // thời gian quay nhanh
+const PAUSE_MS = 400;       // thời gian khựng lại
+const SLOW_DUR_MS = 3500;   // thời gian quay chậm dần để dừng
+
+// Dừng trước ô trúng ~70% góc của 1 segment (bạn có thể chỉnh 0.6–0.8 tùy ý)
+const stopBefore = finalRotation - Math.max(10, anglePerSegment * 0.7);
+
+// Phase 1: quay nhanh tới gần ô trúng
+if (wheelRef.current) {
+  wheelRef.current.style.transition = `transform ${FAST_DUR_MS}ms cubic-bezier(0.33,1,0.68,1)`; // nhanh
+  void wheelRef.current.offsetHeight; // reflow
+}
+setRotation(stopBefore);
+
+// Phase 2: khựng 1 nhịp rồi quay nốt đoạn cuối chậm dần để dừng đúng ô
+setTimeout(() => {
+  if (!wheelRef.current) return;
+
+  // GẮN listener ở đây để bỏ qua transitionend của Phase 1
+  wheelRef.current.addEventListener('transitionend', onTransitionEnd, { once: true } as any);
+
+  wheelRef.current.style.transition = `transform ${SLOW_DUR_MS}ms ease-out`; // chậm dần, nhìn rõ voucher
+  void wheelRef.current.offsetHeight; // reflow
+  setRotation(finalRotation);
+}, FAST_DUR_MS + PAUSE_MS);
+
+      } catch (err: any) {
+        console.error(err);
+        toast.error(err?.message || 'Không thể quay lúc này');
         setIsSpinning(false);
-        const r = pendingResultRef.current;
-        setSpinResult(r || null);
-        setShowResult(true);
-       
-        if (r?.voucher) {
-          setWheelItems((items) =>
-            items.map((it) =>
-              it.code === r.voucher.code ? { ...it, remaining: r.voucher.remaining } : it
-            )
-          );
-        }
-       
-        (async () => {
-          try {
-            const elig = await SpinWheelService.checkEligibility();
-            setEligibility(elig);
-            setCountdown(elig.canSpin ? null : (elig.remainingTime ?? null));
-          } catch {}
-        })();
-      };
-
-      if (wheelRef.current) {
-        wheelRef.current.addEventListener('transitionend', onTransitionEnd, { once: true } as any);
       }
-
-      
-      if (wheelRef.current) void wheelRef.current.offsetHeight;
-      setRotation(finalRotation);
-    } catch (err: any) {
-    if (err.message !== "Unauthorized") {
-      toast.error(err?.message || "Không thể quay lúc này");
-    }
-    setIsSpinning(false);
-  }
-  };
+    };
 
   if (!isOpen) return null;
 

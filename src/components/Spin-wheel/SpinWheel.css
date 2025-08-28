@@ -145,11 +145,14 @@
     #54a0ff 270deg 315deg,
     #5f27cd 315deg 360deg
   );
-  transition: transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  will-change: transform;
+
   transform-style: preserve-3d;
+  will-change: transform;
   backface-visibility: hidden;
+  transform: translateZ(0);
+  transition: transform 2s cubic-bezier(0.25, 1, 0.5, 1); /* fallback */
 }
 
 .wheel-segment {
