@@ -1013,11 +1013,17 @@ const getFlashSaleQuantity = () => {
     <div className="ml-4 mt-2 border-l pl-2">
       <div className="flex items-center gap-2">
         {/* Avatar tròn */}
-     <img
+    <img
   src={
-    question.user_id?.img
-      ? `${IMAGE_USER_URL}/${question.user_id.img}`
-      : "/img/default.png"
+    (typeof window !== "undefined" && localStorage.getItem("user") && question.user_id?._id === JSON.parse(localStorage.getItem("user")!).id)
+      ? JSON.parse(localStorage.getItem("user")!).img
+      : (
+          question.user_id?.img
+            ? (question.user_id.img.startsWith("http")
+                ? question.user_id.img
+                : `${IMAGE_USER_URL}/${question.user_id.img}`)
+            : "/img/default.png"
+        )
   }
   alt={question.user_id?.name || "Người dùng"}
   className="w-8 h-8 rounded-full object-cover"
@@ -1541,16 +1547,24 @@ const getFlashSaleQuantity = () => {
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
                       {/* Avatar tròn */}
-                      <img
-                        src={
-                          c.user_id?.img
-                            ? `${IMAGE_USER_URL}/${c.user_id.img}`
-                            : "/img/default.png"
-                        }
-                        alt={c.user_id?.name || "Người dùng"}
-                        className="w-8 h-8 rounded-full object-cover border"
-                        onError={(e) => { e.currentTarget.src = "/img/default.png"; }}
-                      />
+                      
+<img
+  src={
+    // Nếu là user hiện tại thì lấy img từ localStorage
+    (typeof window !== "undefined" && localStorage.getItem("user") && c.user_id?._id === JSON.parse(localStorage.getItem("user")!).id)
+      ? JSON.parse(localStorage.getItem("user")!).img
+      : (
+          c.user_id?.img
+            ? (c.user_id.img.startsWith("http")
+                ? c.user_id.img
+                : `${IMAGE_USER_URL}/${c.user_id.img}`)
+            : "/img/default.png"
+        )
+  }
+  alt={c.user_id?.name || "Người dùng"}
+  className="w-8 h-8 rounded-full object-cover border"
+  onError={(e) => { e.currentTarget.src = "/img/default.png"; }}
+/>
                       <span className="font-semibold">{c.user_id?.name || "Người dùng"}</span>
                     </div>
                     {/* Chỉnh sửa điều kiện hiển thị các nút */}
