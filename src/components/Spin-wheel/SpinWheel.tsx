@@ -216,32 +216,21 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ isOpen, onClose }) => {
             } catch {}
           })();
         };
-// Dừng sát trước ô trúng, rồi mới dừng hẳn để người dùng nhìn rõ
-const FAST_DUR_MS = 3200;   // thời gian quay nhanh
-const PAUSE_MS = 400;       // thời gian khựng lại
-const SLOW_DUR_MS = 3500;   // thời gian quay chậm dần để dừng
+const TOTAL_DUR_MS = 9000; // tổng thời gian quay
+const FINAL_PAUSE_MS = 1000; // thời gian tĩnh ở ô trúng
+const wheel = wheelRef.current;
+if (!wheel) return;
 
-// Dừng trước ô trúng ~70% góc của 1 segment (bạn có thể chỉnh 0.6–0.8 tùy ý)
-const stopBefore = finalRotation - Math.max(10, anglePerSegment * 0.7);
+// Chỉ 1 transition dài từ vị trí hiện tại tới finalRotation
+wheel.style.transition = `transform ${TOTAL_DUR_MS}ms cubic-bezier(0.165,0.84,0.44,1)`;
+void wheel.offsetHeight; // force reflow
 
-// Phase 1: quay nhanh tới gần ô trúng
-if (wheelRef.current) {
-  wheelRef.current.style.transition = `transform ${FAST_DUR_MS}ms cubic-bezier(0.33,1,0.68,1)`; // nhanh
-  void wheelRef.current.offsetHeight; // reflow
-}
-setRotation(stopBefore);
+setRotation(finalRotation);
 
-// Phase 2: khựng 1 nhịp rồi quay nốt đoạn cuối chậm dần để dừng đúng ô
+// Sau khi kết thúc rotation → tạm dừng tĩnh
 setTimeout(() => {
-  if (!wheelRef.current) return;
-
-  // GẮN listener ở đây để bỏ qua transitionend của Phase 1
-  wheelRef.current.addEventListener('transitionend', onTransitionEnd, { once: true } as any);
-
-  wheelRef.current.style.transition = `transform ${SLOW_DUR_MS}ms ease-out`; // chậm dần, nhìn rõ voucher
-  void wheelRef.current.offsetHeight; // reflow
-  setRotation(finalRotation);
-}, FAST_DUR_MS + PAUSE_MS);
+  onTransitionEnd();
+}, TOTAL_DUR_MS + FINAL_PAUSE_MS);
 
       } catch (err: any) {
         console.error(err);
