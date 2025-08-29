@@ -194,6 +194,7 @@ const OrdersPage = () => {
   const translatePaymentStatus = (status: string) => {
     if (status === "paid") return "Đã thanh toán";
     if (status === "unpaid") return "Chưa thanh toán";
+    if (status === "failed") return "Chưa thanh toán";
     return "Không xác định";
   };
 
