@@ -655,18 +655,15 @@ const OrdersPage = () => {
                         {translatePaymentMethod(order.payment?.method)}
                       </span>{" "}
                       <span>-</span>{" "}
-             <span
-  className={
-    order.payment?.status === "paid"
-      ? "text-green-600 font-semibold"
-      : order.payment?.status === "unpaid"
-      ? "text-red-500 font-semibold"
-      : "text-gray-500 font-semibold"
-  }
->
-  {translatePaymentStatus(order.payment?.status)}
-</span>
-
+                      <span
+                        className={
+                          order.payment?.status === "paid"
+                            ? "text-green-600 font-semibold"
+                            : "text-red-500 font-semibold"
+                        }
+                      >
+                        {translatePaymentStatus(order.payment?.status)}
+                      </span>
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-1 ml-auto w-full md:w-auto mt-1 md:mt-0 pt-6 sm:pt-0">
