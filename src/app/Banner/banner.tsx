@@ -16,7 +16,7 @@ import Image from "next/image";
 
 const Banner = () => {
   const images = [
-    { src: "/img/banner_main_5.png", alt: "Banner Vợt cầu lông chính hãng" },
+    { src: "/img/banner_img_call_1.jpg", alt: "Banner Vợt cầu lông chính hãng" },
     { src: "/img/banner_main_6.png", alt: "Banner Giày cầu lông chất lượng" },
     { src: "/img/banner_main_4.png", alt: "Banner Cửa hàng cầu lông uy tín" },
   ];
@@ -181,7 +181,8 @@ const Banner = () => {
                 {...(index === 0 ? { fetchPriority: "high" } : {})}
               />
             ))}
-            <div className="absolute inset-0 bg-black bg-opacity-30 z-[15]" />
+            {/* Xóa lớp phủ đen */}
+            {/* <div className="absolute inset-0 bg-black bg-opacity-30 z-[15]" /> */}
 
             {/* Caption (Text) trên Banner - Mobile only */}
             <div className="absolute inset-0 z-20 flex flex-col justify-center items-center text-center p-4 md:hidden">

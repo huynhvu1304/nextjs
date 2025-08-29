@@ -47,12 +47,18 @@ const BuyAgainModal: React.FC<BuyAgainModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4 mt-2 sm:mt-4 md:mt-[150px]">
-        {/* Hình ảnh sản phẩm */}
-        <img src={displayImage} alt={product.name} className="w-32 h-32 object-cover mx-auto mb-4" />
-        {/* Tên sản phẩm */}
-        <h2 className="text-lg font-bold mb-2 text-center">{product.name}</h2>
-        {/* Giá */}
-        <p className="text-[#0A9300] font-semibold text-center mb-4">{product.price.toLocaleString()}₫</p>
+        {/* Hình ảnh bên trái, tên và giá bên phải */}
+        <div className="flex items-center mb-4">
+          <img
+            src={displayImage}
+            alt={product.name}
+            className="w-24 h-24 object-cover rounded mr-4"
+          />
+          <div>
+            <h2 className="text-lg font-bold">{product.name}</h2>
+            <p className="text-red-600 font-semibold mt-2">{product.price.toLocaleString()}₫</p>
+          </div>
+        </div>
         {/* Chọn màu sắc */}
         <div className="mb-3">
           <label className="block font-medium mb-1">Màu sắc:</label>
