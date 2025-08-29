@@ -107,16 +107,16 @@ const Banner = () => {
           >
             <Link href="/signup" aria-label="Đăng ký tài khoản">
               <motion.button
-                className="bg-green-600 text-white px-6 py-3 rounded inline-flex items-center gap-2 transition-all duration-300 shadow-md signup-button"
+                className="bg-green-600 text-white px-4 py-2 text-base rounded inline-flex items-center gap-2 transition-all duration-300 shadow-md signup-button"
               >
-                Đăng ký <FaArrowRight />
+                Đăng ký <FaArrowRight size={16} />
               </motion.button>
             </Link>
             <Link href="/about" aria-label="Giới thiệu cửa hàng">
               <motion.button
-                className="border border-green-500 bg-white text-green-500 px-6 py-3 rounded inline-flex items-center gap-2 transition-all duration-300 hover:bg-green-600 hover:text-white"
+                className="border border-green-500 bg-white text-green-500 px-4 py-2 text-base rounded inline-flex items-center gap-2 transition-all duration-300 hover:bg-green-600 hover:text-white"
               >
-                Giới thiệu <FaLocationArrow />
+                Giới thiệu <FaLocationArrow size={16} />
               </motion.button>
             </Link>
           </motion.div>

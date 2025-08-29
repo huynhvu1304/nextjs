@@ -99,8 +99,27 @@ const [manualInput, setManualInput] = useState(""); // Dùng cho số nhà, tên
     useEffect(() => {
     const token = localStorage.getItem("token");
     setIsAuthenticated(!!token);
-    fetchUserAddresses(); 
+    if (token) {
+      fetchUserAddresses(); 
+    } else {
+      setIsAddressLoading(false);
+    }
   }, []);
+
+  // Thêm useEffect để đảm bảo địa chỉ hiển thị ngay khi có dữ liệu
+  useEffect(() => {
+    // Nếu có địa chỉ mặc định và thông tin khách hàng, nhưng customer.address rỗng
+    // thì tự động cập nhật customer.address và selectedAddressId
+    if (defaultUserAddress && customer.name && customer.phone && !customer.address.trim()) {
+      setCustomer(prev => ({
+        ...prev,
+        address: defaultUserAddress.useraddress,
+        selectedAddressId: defaultUserAddress._id
+      }));
+    }
+  }, [defaultUserAddress, customer.name, customer.phone, customer.address]);
+
+
   const handleUpdateQuantity = (itemId: string, newQuantity: number) => {
     const item = cartItems.find((i) => i._id === itemId);
     if (!item) return;
@@ -188,7 +207,7 @@ const [manualInput, setManualInput] = useState(""); // Dùng cho số nhà, tên
       } else if (allAddressesData.length > 0) {
         // 2. If no explicit default, use the first address in the list
         const firstAddress = allAddressesData[0];
-        setDefaultUserAddress(null); // Explicitly state no default found
+        setDefaultUserAddress(firstAddress); // Set first address as default for display
         initialCustomerInfo = {
           name: firstAddress.name,
           phone: firstAddress.phone,
@@ -281,12 +300,16 @@ const [manualInput, setManualInput] = useState(""); // Dùng cho số nhà, tên
       newErrors.phone = "Số điện thoại không hợp lệ.";
     }
 
-    if (!customer.selectedAddressId && !customer.address.trim()) {
+    // Kiểm tra địa chỉ - ưu tiên địa chỉ đã lưu, sau đó mới đến địa chỉ nhập tay
+    if (customer.selectedAddressId && customer.address.trim()) {
+      // Đã chọn địa chỉ từ danh sách đã lưu
+      // Không cần kiểm tra gì thêm
+    } else if (defaultUserAddress && customer.name && customer.phone) {
+      // Có địa chỉ mặc định và thông tin khách hàng
+      // Không cần kiểm tra gì thêm
+    } else if (!customer.address.trim()) {
       newErrors.address = "Vui lòng chọn địa chỉ đã lưu hoặc nhập địa chỉ mới.";
-    } else if (
-      !customer.selectedAddressId &&
-      customer.address.trim().length < 5
-    ) {
+    } else if (customer.address.trim().length < 5) {
       newErrors.address = "Địa chỉ chi tiết quá ngắn.";
     }
 
@@ -802,19 +825,18 @@ useEffect(() => {
   ) : (
     <>
       {/* Hiển thị địa chỉ đã chọn/mặc định */}
-      {customer.selectedAddressId ? (
+      {(customer.selectedAddressId && customer.address) || (defaultUserAddress && customer.name && customer.phone) ? (
         <div className="p-4 border rounded-md bg-green-50 flex justify-between items-start mb-3">
           <div>
             <p className="font-semibold text-gray-800">
               {customer.name} ({customer.phone})
             </p>
             <p className="text-gray-700 text-sm">
-              {customer.address}
+              {customer.address || (defaultUserAddress ? defaultUserAddress.useraddress : "")}
             </p>
             {/* Nhãn "Mặc định" chỉ hiển thị nếu địa chỉ này khớp với defaultUserAddress */}
             {defaultUserAddress &&
-              customer.selectedAddressId ===
-                defaultUserAddress._id && (
+              (customer.selectedAddressId === defaultUserAddress._id || (!customer.selectedAddressId && defaultUserAddress)) && (
                 <span className="mt-2 inline-block px-3 py-1 bg-green-600 text-white text-xs font-bold rounded-full shadow-sm">
                   Mặc định
                 </span>

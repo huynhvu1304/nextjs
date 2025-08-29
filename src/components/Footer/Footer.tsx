@@ -15,6 +15,7 @@ const Footer = () => {
               src="/img/logo.png"
               alt="Logo"
               className="h-15 sm:h-32 w-40 object-contain mx-auto sm:mx-0"
+              loading="lazy"
             />
           </div>
 
@@ -76,8 +77,8 @@ const Footer = () => {
             <div>
               <h3 className="text-xl font-semibold mb-5">Chứng nhận</h3>
               <div className="flex gap-6 flex-wrap">
-                <img src="/img/DMCA_1.png" alt="Chứng nhận DMCA" className="h-12 object-contain" />
-                <img src="/img/logoSaleNoti.png" alt="Chứng nhận Sale Noti" className="h-12 object-contain" />
+                <img src="/img/DMCA_1.png" alt="Chứng nhận DMCA" className="h-12 object-contain" loading="lazy" />
+                <img src="/img/logoSaleNoti.png" alt="Chứng nhận Sale Noti" className="h-12 object-contain" loading="lazy" />
               </div>
             </div>
           </div>

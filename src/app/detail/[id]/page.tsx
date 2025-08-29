@@ -862,7 +862,12 @@ const getFlashSaleQuantity = () => {
       setIsSubmittingQuestion(false);
       return;
     }
-    const { id: user_id } = JSON.parse(user);
+    const { id: user_id, statusquestion } = JSON.parse(user);
+    if (statusquestion === "Cấm đặt câu hỏi") {
+      toast.error("Tài khoản của bạn đã bị cấm đặt câu hỏi");
+      setIsSubmittingQuestion(false);
+      return;
+    }
     try {
       const res = await fetch(`${API_URL}/questions`, {
         method: "POST",
@@ -1016,7 +1021,13 @@ const getFlashSaleQuantity = () => {
     <img
   src={
     (typeof window !== "undefined" && localStorage.getItem("user") && question.user_id?._id === JSON.parse(localStorage.getItem("user")!).id)
-      ? JSON.parse(localStorage.getItem("user")!).img
+      ? (
+          JSON.parse(localStorage.getItem("user")!).img
+            ? (JSON.parse(localStorage.getItem("user")!).img.startsWith("http")
+                ? JSON.parse(localStorage.getItem("user")!).img
+                : `${IMAGE_USER_URL}/${JSON.parse(localStorage.getItem("user")!).img}`)
+            : "/img/default.png"
+        )
       : (
           question.user_id?.img
             ? (question.user_id.img.startsWith("http")
@@ -1550,9 +1561,14 @@ const getFlashSaleQuantity = () => {
                       
 <img
   src={
-    // Nếu là user hiện tại thì lấy img từ localStorage
     (typeof window !== "undefined" && localStorage.getItem("user") && c.user_id?._id === JSON.parse(localStorage.getItem("user")!).id)
-      ? JSON.parse(localStorage.getItem("user")!).img
+      ? (
+          JSON.parse(localStorage.getItem("user")!).img
+            ? (JSON.parse(localStorage.getItem("user")!).img.startsWith("http")
+                ? JSON.parse(localStorage.getItem("user")!).img
+                : `${IMAGE_USER_URL}/${JSON.parse(localStorage.getItem("user")!).img}`)
+            : "/img/default.png"
+        )
       : (
           c.user_id?.img
             ? (c.user_id.img.startsWith("http")

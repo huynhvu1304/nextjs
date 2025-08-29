@@ -3,11 +3,13 @@ import { API_URL, IMAGE_URL, IMAGE_USER_URL } from "@/lib/api";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaBoxOpen, FaSearch, FaSort, FaFilter, FaCalendarAlt, FaMoneyBillWave, FaArrowLeft, FaCopy } from "react-icons/fa";
+import { FaBoxOpen, FaSearch, FaSort, FaFilter, FaArrowLeft, FaCopy } from "react-icons/fa";
 import { toast } from "react-toastify"; 
-import Swal from "sweetalert2"; 
 import { useRouter } from "next/navigation";
 import ReviewForm from "@/components/ReviewForm"; 
+import BuyAgainModal from "@/components/BuyAgainModal";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/slices/cartSlice";
 
 
 interface Order {
@@ -57,6 +59,9 @@ const CANCEL_REASONS = [
 
 const OrdersPage = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
   // State lưu danh sách đơn hàng
   const [orders, setOrders] = useState<Order[]>([]);
@@ -97,6 +102,10 @@ const OrdersPage = () => {
 
   // State cho sản phẩm đã được đánh giá
   const [reviewedProducts, setReviewedProducts] = useState<string[]>([]);
+
+  // State cho modal mua lại sản phẩm
+  const [showBuyAgainModal, setShowBuyAgainModal] = useState(false);
+  const [buyAgainProduct, setBuyAgainProduct] = useState<any>(null);
 
   // Gán isClient = true sau khi component render phía client
   useEffect(() => {
@@ -352,6 +361,78 @@ const OrdersPage = () => {
 
     return () => clearTimeout(timeout);
   }, [searchText]);
+
+  // Hàm mở modal mua lại
+  const openBuyAgainModal = async (item: any) => {
+    try {
+      const res = await fetch(`${API_URL}/products/${item.productId}`);
+      const product = await res.json();
+      setBuyAgainProduct({
+        productId: item.productId,
+        variantId: item.variant._id,
+        image: item.variant.image, 
+        images_main: product.images_main,
+        name: item.productName,
+        price: item.price,
+        colors: Array.from(new Set(product.variants.map((v: any) => v.color))),
+        sizes: Array.from(new Set(product.variants.map((v: any) => v.size))),
+        variants: product.variants,
+      });
+      setShowBuyAgainModal(true);
+    } catch (err) {
+      toast.error("Không lấy được thông tin sản phẩm!");
+    }
+  };
+
+  // Hàm xử lý mua lại
+  const handleBuyAgain = async (selected: { color: string; size: string; quantity: number }) => {
+    try {
+      const variant = buyAgainProduct.variants.find(
+        (v: any) => v.color === selected.color && v.size === selected.size
+      );
+      if (!variant) {
+        toast.error("Không tìm thấy phiên bản sản phẩm!");
+        return;
+      }
+      let finalPrice = variant.cost_price;
+      if (variant.sale_price !== undefined && variant.sale_price !== null) {
+        finalPrice = variant.sale_price;
+      }
+      const cartItem = {
+        _id: Math.random().toString(),
+        productId: buyAgainProduct.productId,
+        variantId: variant._id,
+        quantity: selected.quantity,
+        note: "",
+        productName: buyAgainProduct.name,
+        productImage: buyAgainProduct.images_main || "",
+        variantDetails: {
+          _id: variant._id,
+          size: variant.size,
+          color: variant.color,
+          cost_price: variant.cost_price,
+          cost_sale: finalPrice,
+          image: variant.image,
+        },
+      };
+      // Kiểm tra dữ liệu trước khi dispatch
+      if (
+        !cartItem.productId ||
+        !cartItem.variantId ||
+        !cartItem.variantDetails._id ||
+        !cartItem.productImage ||
+        !cartItem.variantDetails.image
+      ) {
+        toast.error("Thiếu thông tin sản phẩm hoặc biến thể!");
+        return;
+      }
+      dispatch(addToCart(cartItem));
+      toast.success("Đã thêm vào giỏ hàng!", { autoClose: 2000 });
+      setShowBuyAgainModal(false);
+    } catch (err) {
+      toast.error("Thêm vào giỏ hàng thất bại!", { autoClose: 2000 });
+    }
+  };
 
   return (
     <div className="container-custom mt-[20px] sm:mt-[100px]">
@@ -771,7 +852,7 @@ const OrdersPage = () => {
                                           </button>
                                         )}
                                         <button
-                                          onClick={() => handleRepurchase(item.productId)}
+                                          onClick={() => openBuyAgainModal(item)}
                                           className="text-xs sm:text-sm bg-[#0A9300] text-white border-2 border-[#0A9300] px-3 py-1 rounded font-semibold"
                                         >
                                           Mua lại
@@ -782,7 +863,7 @@ const OrdersPage = () => {
                                     {order.status === "cancelled" && item.productId && (
                                       <div className="mt-2 flex gap-2">
                                         <button
-                                          onClick={() => handleRepurchase(item.productId!)}
+                                          onClick={() => openBuyAgainModal(item)}
                                           className="text-xs sm:text-sm bg-[#0A9300] text-white border-2 border-[#0A9300] px-3 py-1 rounded font-semibold"
                                         >
                                           Mua lại
@@ -917,6 +998,16 @@ const OrdersPage = () => {
               />
           </div>
         </div>
+      )}
+
+      {/* Modal mua lại sản phẩm */}
+      {showBuyAgainModal && buyAgainProduct && (
+        <BuyAgainModal
+          open={showBuyAgainModal}
+          onClose={() => setShowBuyAgainModal(false)}
+          product={buyAgainProduct}
+          onBuyAgain={handleBuyAgain}
+        />
       )}
     </div>
   );
